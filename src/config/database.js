@@ -1,6 +1,6 @@
 const settings = require('./settings');
 
-const commonConfig = {
+const config = {
   client: 'sqlite3',
   connection: {
     filename: settings.db.url,
@@ -10,8 +10,4 @@ const commonConfig = {
   },
 };
 
-module.exports = {
-  development: commonConfig,
-  test: commonConfig,
-  production: commonConfig,
-};
+module.exports = config;
