@@ -7,6 +7,7 @@
     "knex": "./node_modules/.bin/knex"
   },
   "dependencies": {
+    "async": "^3.1.0",
     "bookshelf": "^1.0.1",
     "intel": "^1.2.0",
     "knex": "^0.20.1",
