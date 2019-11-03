@@ -5,7 +5,7 @@ const path = require('path');
 async function processDirectory({ dirpath, fileProcessor }) {
   const dirEntry = await fs.promises.opendir(dirpath);
 
-  return async.each(dirEntry, async (dirItem) => {
+  return async.eachSeries(dirEntry, async (dirItem) => {
     const nextDirItemPath = path.resolve(path.join(
       dirpath,
       dirItem.name,
