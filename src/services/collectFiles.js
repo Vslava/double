@@ -1,6 +1,7 @@
 const async = require('async');
 const fs = require('fs');
 const util = require('util');
+const crypto = require('crypto');
 const context = require('context');
 
 const fsOpen = util.promisify(fs.open);
@@ -17,8 +18,15 @@ async function readFileBeginning(filePath) {
 
   return buffer;
 }
+
 async function fileProcessor(filePath) {
-  // TODO implement file processing
+  const resultBuffer = await readFileBeginning(filePath);
+
+  const fileSign = crypto.createHash('md5').update(resultBuffer).digest('hex');
+
+  console.log('--- sign:', fileSign, 'file:', filePath);
+
+  // TODO save the file information
 }
 
 module.exports = async ({ dirpaths }) => (
