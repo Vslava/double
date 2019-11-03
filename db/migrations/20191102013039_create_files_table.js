@@ -5,8 +5,6 @@ exports.up = (knex) => (
     t.string('sign').notNullable();
 
     t.timestamps(true, true);
-
-    t.unique('sign');
   })
 );
 
