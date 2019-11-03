@@ -1,3 +1,3 @@
-const database = require('./src/config/database');
+const database = require('./config/database');
 
 module.exports = database;
