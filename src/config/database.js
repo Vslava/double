@@ -6,7 +6,7 @@ const config = {
     filename: settings.db.url,
   },
   migrations: {
-    directory: './db/migrations'
+    directory: './db/migrations',
   },
 };
 
