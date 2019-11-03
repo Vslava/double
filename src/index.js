@@ -11,7 +11,11 @@ require('yargs')
         type: 'string',
       });
     },
-    handler: (argv) => context.services.collectFiles(argv.dirpath),
+    handler: async (argv) => context.services.collectFiles({
+      dirpaths: [
+        argv.dirpath,
+      ],
+    }),
   })
   .scriptName('doubler')
   .strict()
