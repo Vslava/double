@@ -8,6 +8,7 @@ const config = {
   migrations: {
     directory: './db/migrations',
   },
+  useNullAsDefault: true,
 };
 
 module.exports = config;
