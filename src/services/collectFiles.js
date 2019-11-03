@@ -1,17 +1,17 @@
 const async = require('async');
 const context = require('context');
 
-const { services } = context;
-
 async function fileProcessor(filePath) {
   // TODO implement file processing
 }
 
-module.exports = ({ dirpaths }) => (
-  async.each(dirpaths, async (dirpath) => (
-    services.processDirectory({
+module.exports = async ({ dirpaths }) => (
+  async.each(dirpaths, async (dirpath) => {
+    const { services } = context();
+
+    return services.processDirectory({
       dirpath,
       fileProcessor,
-    })
-  ))
+    });
+  })
 );

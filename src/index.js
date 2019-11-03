@@ -11,7 +11,7 @@ require('yargs')
         type: 'string',
       });
     },
-    handler: async (argv) => context.services.collectFiles({
+    handler: async (argv) => context().services.collectFiles({
       dirpaths: [
         argv.dirpath,
       ],
