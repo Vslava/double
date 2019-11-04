@@ -9,9 +9,14 @@
   "dependencies": {
     "async": "^3.1.0",
     "bookshelf": "^1.0.1",
+    "chai": "^4.2.0",
+    "chai-as-promised": "^7.1.1",
+    "faker": "^4.1.0",
     "intel": "^1.2.0",
     "knex": "^0.20.1",
+    "mocha": "^6.2.2",
     "requireindex": "^1.2.0",
+    "sinon": "^7.5.0",
     "sqlite3": "^4.1.0",
     "yargs": "^14.2.0"
   },
