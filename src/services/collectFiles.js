@@ -16,8 +16,8 @@ async function saveInfoAboutFile(filePath) {
   const { services } = ctx;
   const { File } = ctx.models;
 
-  const fileBuffer = services.readFileBeginning(filePath);
-  const fileSign = await services.createFileSign(fileBuffer);
+  const fileBuffer = services.util.readFileBeginning(filePath);
+  const fileSign = await services.util.createFileSign(fileBuffer);
 
   console.log('--- sign:', fileSign, 'file:', filePath);
 
@@ -42,7 +42,7 @@ module.exports = async ({ dirpaths }) => (
   async.eachSeries(dirpaths, async (dirpath) => {
     const { services } = context();
 
-    return services.processDirectory({
+    return services.util.processDirectory({
       dirpath,
       fileProcessor,
     });
