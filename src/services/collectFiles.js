@@ -16,7 +16,7 @@ async function saveInfoAboutFile(filePath) {
   const { services } = ctx;
   const { File } = ctx.models;
 
-  const fileBuffer = services.util.readFileBeginning(filePath);
+  const fileBuffer = await services.util.readFileBeginning(filePath);
   const fileSign = await services.util.createFileSign(fileBuffer);
 
   console.log('--- sign:', fileSign, 'file:', filePath);
