@@ -4,7 +4,9 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "knex": "./node_modules/.bin/knex"
+    "knex": "./node_modules/.bin/knex",
+    "mocha": "./node_modules/.bin/mocha",
+    "test": "NODE_ENV=test ./node_modules/.bin/mocha --exit --recursive ./test/"
   },
   "dependencies": {
     "async": "^3.1.0",
