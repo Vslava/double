@@ -1,36 +1,45 @@
 const async = require('async');
-const fs = require('fs');
-const util = require('util');
-const crypto = require('crypto');
 const context = require('context');
 
-const fsOpen = util.promisify(fs.open);
-const fsRead = util.promisify(fs.read);
+async function fileExistInDb(filePath) {
+  const { File } = context().models;
 
-const START_FILE_BYTES_COUNT = 2000000;
+  const result = await File.where(
+    'filepath', filePath,
+  ).fetch({ require: false });
 
-async function readFileBeginning(filePath) {
-  const fid = await fsOpen(filePath);
-
-  const buf = Buffer.alloc(START_FILE_BYTES_COUNT);
-
-  const { buffer } = await fsRead(fid, buf, 0, START_FILE_BYTES_COUNT, 0);
-
-  return buffer;
+  return !!result;
 }
 
-async function fileProcessor(filePath) {
-  const resultBuffer = await readFileBeginning(filePath);
+async function saveInfoAboutFile(filePath) {
+  const ctx = context();
+  const { services } = ctx;
+  const { File } = ctx.models;
 
-  const fileSign = crypto.createHash('md5').update(resultBuffer).digest('hex');
+  const fileBuffer = services.readFileBeginning(filePath);
+  const fileSign = await services.createFileSign(fileBuffer);
 
   console.log('--- sign:', fileSign, 'file:', filePath);
 
-  // TODO save the file information
+  await File.forge({
+    filepath: filePath,
+    sign: fileSign,
+  }).save();
+
+  return null;
+}
+
+async function fileProcessor(filePath) {
+  if (await fileExistInDb(filePath)) {
+    console.log('--- file:', filePath, 'was already proccessed');
+    return null;
+  }
+
+  return saveInfoAboutFile(filePath);
 }
 
 module.exports = async ({ dirpaths }) => (
-  async.each(dirpaths, async (dirpath) => {
+  async.eachSeries(dirpaths, async (dirpath) => {
     const { services } = context();
 
     return services.processDirectory({
