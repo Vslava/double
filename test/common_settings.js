@@ -1,10 +1,6 @@
 const async = require('async');
 const sinon = require('sinon');
-const chai = require('chai');
-const chaiAsPromised = require('chai-as-promised');
 const context = require('context');
-
-chai.use(chaiAsPromised);
 
 async function clearModelTables() {
   const ctx = context();
