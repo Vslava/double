@@ -17,12 +17,14 @@ yargs
       });
     },
     handler: async (argv) => {
-      return context().services.collectFiles({
+      await context().services.collectFiles({
         onlyImages: !!argv['only-images'],
         dirpaths: [
           argv.dirpath,
         ],
       });
+
+      process.exit(0);
     },
   })
   .scriptName('doubler')
