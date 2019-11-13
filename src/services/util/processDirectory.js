@@ -2,23 +2,33 @@ const async = require('async');
 const fs = require('fs');
 const path = require('path');
 
-async function processDirectory({ dirpath, fileProcessor }) {
+function canProcessFile(filePath) {
+  // TODO check the mime-type of the file
+  return true;
+}
+
+async function processDirectory({ dirpath, onlyImages, fileProcessor }) {
   const dirEntry = await fs.promises.opendir(dirpath);
 
   return async.eachSeries(dirEntry, async (dirItem) => {
-    const nextDirItemPath = path.resolve(path.join(
+    const dirItemPath = path.resolve(path.join(
       dirpath,
       dirItem.name,
     ));
 
     if (dirItem.isDirectory()) {
       return processDirectory({
-        dirpath: nextDirItemPath,
+        dirpath: dirItemPath,
+        onlyImages,
         fileProcessor,
       });
     }
 
-    return fileProcessor && fileProcessor(nextDirItemPath);
+    if (!canProcessFile(dirItemPath)) {
+      return null;
+    }
+
+    return fileProcessor && fileProcessor(dirItemPath);
   });
 }
 

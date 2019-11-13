@@ -38,11 +38,12 @@ async function fileProcessor(filePath) {
   return saveInfoAboutFile(filePath);
 }
 
-module.exports = async ({ dirpaths }) => (
+module.exports = async ({ dirpaths, onlyImages }) => (
   async.eachSeries(dirpaths, async (dirpath) => {
     const { services } = context();
 
     return services.util.processDirectory({
+      onlyImages,
       dirpath,
       fileProcessor,
     });
