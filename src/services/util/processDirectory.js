@@ -1,9 +1,18 @@
 const async = require('async');
 const fs = require('fs');
 const path = require('path');
+const fileType = require('file-type');
 
-function canProcessFile(filePath) {
-  // TODO check the mime-type of the file
+async function canProcessFile(filePath, { onlyImages }) {
+  const fileReadStream = fs.createReadStream(filePath);
+  const fileTypeStream = await fileType.stream(fileReadStream);
+
+  const fileMimeType = (fileTypeStream.fileType || {}).mime;
+
+  if (onlyImages) {
+    return fileMimeType && fileMimeType.startsWith('image/');
+  }
+
   return true;
 }
 
@@ -24,7 +33,7 @@ async function processDirectory({ dirpath, onlyImages, fileProcessor }) {
       });
     }
 
-    if (!canProcessFile(dirItemPath)) {
+    if (!await canProcessFile(dirItemPath, { onlyImages })) {
       return null;
     }
 
