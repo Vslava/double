@@ -1,21 +1,29 @@
+const yargs = require('yargs');
 const context = require('context');
 
 // eslint-disable-next-line no-unused-expressions
-require('yargs')
+yargs
   .command({
-    command: 'collect <dirpath>',
-    desc: "Collect all files' information in the dirpath directory",
-    builder: (yargs) => {
-      yargs.positional('dirname', {
+    command: 'collect [--only-images] <dirpath>',
+    desc: 'Collect information about all files in the dirpath directory',
+    builder: (_yargs) => {
+      _yargs.positional('dirname', {
         describe: 'A directory where the files are placed',
         type: 'string',
       });
+      _yargs.option('only-images', {
+        describe: 'Only images will be processed',
+        type: 'boolean',
+      });
     },
-    handler: async (argv) => context().services.collectFiles({
-      dirpaths: [
-        argv.dirpath,
-      ],
-    }),
+    handler: async (argv) => {
+      return context().services.collectFiles({
+        onlyImages: !!argv['only-images'],
+        dirpaths: [
+          argv.dirpath,
+        ],
+      });
+    },
   })
   .scriptName('doubler')
   .strict()
