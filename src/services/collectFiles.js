@@ -38,14 +38,28 @@ async function fileProcessor(filePath) {
   return saveInfoAboutFile(filePath);
 }
 
-module.exports = async ({ dirpaths, onlyImages }) => (
-  async.eachSeries(dirpaths, async (dirpath) => {
-    const { services } = context();
+function makeFileAccessorsList({ onlyImages }) {
+  const { services } = context();
 
-    return services.util.processDirectory({
-      onlyImages,
+  const fileAccessors = [];
+
+  if (onlyImages) {
+    fileAccessors.push(services.util.fileAccessors.image);
+  }
+
+  return fileAccessors;
+}
+
+module.exports = async ({ dirpaths, onlyImages }) => {
+  const { services } = context();
+
+  const fileAccessors = makeFileAccessorsList({ onlyImages });
+
+  return async.eachSeries(dirpaths, async (dirpath) => (
+    services.util.processDirectory({
+      fileAccessors,
       dirpath,
       fileProcessor,
-    });
-  })
-);
+    })
+  ));
+};

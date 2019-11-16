@@ -1,22 +1,20 @@
 const async = require('async');
 const fs = require('fs');
 const path = require('path');
-const fileType = require('file-type');
 
-async function canProcessFile(filePath, { onlyImages }) {
-  const fileReadStream = fs.createReadStream(filePath);
-  const fileTypeStream = await fileType.stream(fileReadStream);
-
-  const fileMimeType = (fileTypeStream.fileType || {}).mime;
-
-  if (onlyImages) {
-    return fileMimeType && fileMimeType.startsWith('image/');
+async function canProcessFile(filePath, fileAccessors) {
+  if (fileAccessors.length === 0) {
+    return true;
   }
 
-  return true;
+  return async.reduce((fileAccessors), false, async (memo, fileAccessor) => {
+    const checkResult = await fileAccessor(filePath);
+
+    return memo || checkResult;
+  });
 }
 
-async function processDirectory({ dirpath, onlyImages, fileProcessor }) {
+async function processDirectory({ dirpath, fileAccessors, fileProcessor }) {
   const dirEntry = await fs.promises.opendir(dirpath);
 
   return async.eachSeries(dirEntry, async (dirItem) => {
@@ -28,12 +26,12 @@ async function processDirectory({ dirpath, onlyImages, fileProcessor }) {
     if (dirItem.isDirectory()) {
       return processDirectory({
         dirpath: dirItemPath,
-        onlyImages,
+        fileAccessors,
         fileProcessor,
       });
     }
 
-    if (!await canProcessFile(dirItemPath, { onlyImages })) {
+    if (!await canProcessFile(dirItemPath, fileAccessors)) {
       return null;
     }
 
