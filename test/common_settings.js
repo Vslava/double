@@ -1,3 +1,5 @@
+/* eslint-disable func-names */
+const path = require('path');
 const async = require('async');
 const sinon = require('sinon');
 const context = require('context');
@@ -18,6 +20,10 @@ afterEach(async () => {
   sinon.restore();
 
   await clearModelTables();
+});
+
+before(function () {
+  this.fixtureDir = path.resolve('test/fixtures');
 });
 
 after(() => process.exit(0));
