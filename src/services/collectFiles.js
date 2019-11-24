@@ -38,22 +38,10 @@ async function fileProcessor(filePath) {
   return saveInfoAboutFile(filePath);
 }
 
-function makeFileAccessorsList({ onlyImages }) {
-  const { services } = context();
-
-  const fileAccessors = [];
-
-  if (onlyImages) {
-    fileAccessors.push(services.util.fileAccessors.image);
-  }
-
-  return fileAccessors;
-}
-
 module.exports = async ({ dirpaths, onlyImages }) => {
   const { services } = context();
 
-  const fileAccessors = makeFileAccessorsList({ onlyImages });
+  const fileAccessors = services.util.makeFileAccessorsList({ onlyImages });
 
   return async.eachSeries(dirpaths, async (dirpath) => (
     services.util.processDirectory({
