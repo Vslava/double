@@ -27,6 +27,30 @@ yargs
       process.exit(0);
     },
   })
+  .command({
+    command: 'find [--only-images] <dirpath>',
+    desc: 'Find doubles in the db for all files in the dirpath directory',
+    builder: (_yargs) => {
+      _yargs.positional('dirname', {
+        describe: 'A directory where the files are placed',
+        type: 'string',
+      });
+      _yargs.option('only-images', {
+        describe: 'Only images will be processed',
+        type: 'boolean',
+      });
+    },
+    handler: async (argv) => {
+      await context().services.findDoubles({
+        onlyImages: !!argv['only-images'],
+        dirpaths: [
+          argv.dirpath,
+        ],
+      });
+
+      process.exit(0);
+    },
+  })
   .scriptName('doubler')
   .strict()
   .demandCommand(1, 'You need at least one command before moving on')
