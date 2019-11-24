@@ -25,12 +25,14 @@ describe(__filename, () => {
     file3: '02a73a746f187bbdee14bcf8b752d643',
     file4: '2241b4b34e81a6d0829e944f89a35d1e',
     'pic.jpeg': '7a86539287b66fcb477a754f7f861f6a',
+    thesame1: 'b6ee2058d98027764d589b1e3a102c39',
   };
 
   beforeEach(function () {
     const rootDir = path.join(this.fixtureDir, 'several_dirs');
     this.dir1 = path.join(rootDir, 'dir1');
     this.dir2 = path.join(rootDir, 'dir2');
+    this.theSame = path.join(rootDir, 'the_same');
   });
 
   describe('process all files', () => {
@@ -111,6 +113,26 @@ describe(__filename, () => {
       checkSign(this.dir2, 'file3', fileSigns.file3);
       checkSign(this.dir2, 'file4', fileSigns.file4);
       checkSign(this.dir2, 'pic.jpeg', fileSigns['pic.jpeg']);
+    });
+  });
+
+  context('when there is a file with the same sign', () => {
+    it('collects it everyway', async function () {
+      // init
+      const { collectFiles } = appContext().services;
+      const { File } = appContext().models;
+
+      // process
+      await collectFiles({
+        dirpaths: [this.dir1, this.theSame],
+      });
+
+      // check
+      const cachedFiles = await File.fetchAll();
+      const checkSign = checkFunction(cachedFiles);
+
+      checkSign(this.dir1, 'file1', fileSigns.file1);
+      checkSign(this.theSame, 'thesame1', fileSigns.thesame1);
     });
   });
 });
