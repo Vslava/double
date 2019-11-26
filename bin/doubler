@@ -1,0 +1,5 @@
+#!/bin/sh
+
+APPDIR=$HOME/Projects/doubler
+
+node $APPDIR/src/index.js $*
