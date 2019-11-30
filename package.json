@@ -10,7 +10,7 @@
   },
   "engines": {
     "node": "^12.13.1",
-    "yarn": "1.19.1"
+    "yarn": "1.19.2"
   },
   "dependencies": {
     "async": "^3.1.0",
