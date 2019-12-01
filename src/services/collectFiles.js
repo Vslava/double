@@ -4,9 +4,7 @@ const context = require('context');
 async function fileExistInDb(filePath) {
   const { File } = context().models;
 
-  const result = await File
-    .where('filepath', filePath)
-    .fetch({ require: false });
+  const result = await File.findByFilePath(filePath);
 
   return !!result;
 }
@@ -22,10 +20,10 @@ async function saveInfoAboutFile(filePath, options) {
 
   loggers.fileProcessed(filePath);
 
-  await new File({
+  await File.createNew({
     filepath: filePath,
     sign: fileSign,
-  }).save();
+  });
 
   return null;
 }
