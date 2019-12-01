@@ -22,7 +22,7 @@ async function saveInfoAboutFile(filePath, options) {
 
   loggers.fileProcessed(filePath);
 
-  await File.forge({
+  await new File({
     filepath: filePath,
     sign: fileSign,
   }).save();
