@@ -5,9 +5,9 @@ module.exports = async (options) => {
   const { File } = context().models;
   const { logger } = options;
 
-  const doubles = await File.findDoubleSigns();
+  const doublesStream = File.findDoubleSigns().stream();
 
-  await async.eachSeries(doubles, async (double) => {
+  await async.each(doublesStream, async (double) => {
     const { sign: fileSign } = double;
 
     const doubleFiles = await File.findAllForSign(fileSign);
