@@ -50,7 +50,7 @@ yargs
       const { loggers } = context();
 
       await defaultHandler(() => (
-        context().services.findDoubles(loggers.doubleFiles)
+        context().services.findDoubles({ logger: loggers.doubleFiles })
       ), argv);
     },
   })

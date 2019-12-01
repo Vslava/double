@@ -42,7 +42,7 @@ describe(__filename, () => {
     const loggerSpy = sinon.spy();
 
     // process
-    await findDoubles(loggerSpy);
+    await findDoubles({ logger: loggerSpy });
 
     // check
     assert.strictEqual(loggerSpy.callCount, 2);
