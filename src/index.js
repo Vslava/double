@@ -1,3 +1,4 @@
+const _ = require('lodash');
 const yargs = require('yargs');
 const context = require('context');
 
@@ -23,12 +24,21 @@ yargs
       });
     },
     handler: async (argv) => {
+      const { loggers } = context();
+
+      const collectLoggers = _.pick(loggers, [
+        'fileAlreadyCollected',
+        'fileProcessed',
+      ]);
+
       await defaultHandler(() => (
         context().services.collectFiles({
           onlyImages: !!argv['only-images'],
           dirpaths: [
             argv.dirpath,
           ],
+        }, {
+          loggers: collectLoggers,
         })
       ), argv);
     },

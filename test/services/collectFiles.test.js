@@ -1,6 +1,6 @@
 /* eslint-disable func-names */
 const path = require('path');
-const assert = require('assert');
+const { assert } = require('chai');
 const appContext = require('context');
 
 describe(__filename, () => {
@@ -28,6 +28,13 @@ describe(__filename, () => {
     thesame1: 'b6ee2058d98027764d589b1e3a102c39',
   };
 
+  const options = {
+    loggers: {
+      fileAlreadyCollected: () => {},
+      fileProcessed: () => {},
+    },
+  };
+
   beforeEach(function () {
     const rootDir = path.join(this.fixtureDir, 'several_dirs');
     this.dir1 = path.join(rootDir, 'dir1');
@@ -44,7 +51,7 @@ describe(__filename, () => {
       // process
       await collectFiles({
         dirpaths: [this.dir1, this.dir2],
-      });
+      }, options);
 
       // check
       const cachedFiles = await File.fetchAll();
@@ -70,7 +77,7 @@ describe(__filename, () => {
       await collectFiles({
         dirpaths: [this.dir1, this.dir2],
         onlyImages: true,
-      });
+      }, options);
 
       // check
       const cachedFiles = await File.fetchAll();
@@ -100,7 +107,7 @@ describe(__filename, () => {
       // process
       await collectFiles({
         dirpaths: [this.dir1, this.dir2],
-      });
+      }, options);
 
       // check
       const cachedFiles = await File.fetchAll();
@@ -125,7 +132,7 @@ describe(__filename, () => {
       // process
       await collectFiles({
         dirpaths: [this.dir1, this.theSame],
-      });
+      }, options);
 
       // check
       const cachedFiles = await File.fetchAll();

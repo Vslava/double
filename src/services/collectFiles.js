@@ -4,22 +4,23 @@ const context = require('context');
 async function fileExistInDb(filePath) {
   const { File } = context().models;
 
-  const result = await File.where(
-    'filepath', filePath,
-  ).fetch({ require: false });
+  const result = await File
+    .where('filepath', filePath)
+    .fetch({ require: false });
 
   return !!result;
 }
 
-async function saveInfoAboutFile(filePath) {
+async function saveInfoAboutFile(filePath, options) {
   const ctx = context();
   const { services } = ctx;
   const { File } = ctx.models;
+  const { loggers } = options;
 
   const fileBuffer = await services.util.readFileBeginning(filePath);
   const fileSign = await services.util.createFileSign(fileBuffer);
 
-  console.log('--- sign:', fileSign, 'file:', filePath);
+  loggers.fileProcessed(filePath);
 
   await File.forge({
     filepath: filePath,
@@ -29,16 +30,18 @@ async function saveInfoAboutFile(filePath) {
   return null;
 }
 
-async function fileProcessor(filePath) {
+async function fileProcessor(filePath, options) {
+  const { loggers } = options;
+
   if (await fileExistInDb(filePath)) {
-    console.log('--- file:', filePath, 'was already proccessed');
+    loggers.fileAlreadyCollected(filePath);
     return null;
   }
 
-  return saveInfoAboutFile(filePath);
+  return saveInfoAboutFile(filePath, options);
 }
 
-module.exports = async ({ dirpaths, onlyImages }) => {
+module.exports = async ({ dirpaths, onlyImages }, options) => {
   const { services } = context();
 
   const fileAccessors = services.util.makeFileAccessorsList({ onlyImages });
@@ -47,7 +50,7 @@ module.exports = async ({ dirpaths, onlyImages }) => {
     services.util.processDirectory({
       fileAccessors,
       dirpath,
-      fileProcessor,
+      fileProcessor: (filePath) => fileProcessor(filePath, options),
     })
   ));
 };
