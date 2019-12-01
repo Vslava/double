@@ -10,7 +10,7 @@ module.exports = (bookshelf) => (
         .where('filepath', filePath)
         .fetch({ require: false });
     },
-    findDoubleSigns() {
+    findDoubleSignsKnex() {
       return this.query()
         .select('sign')
         .groupBy('sign')
