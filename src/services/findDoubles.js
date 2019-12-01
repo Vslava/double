@@ -1,35 +1,20 @@
 const async = require('async');
 const context = require('context');
 
-async function fileProcessor(filePath) {
-  const ctx = context();
-  const { services } = ctx;
-  const { File } = ctx.models;
+module.exports = async (logger) => {
+  const { File } = context().models;
 
-  const fileBuffer = await services.util.readFileBeginning(filePath);
-  const fileSign = await services.util.createFileSign(fileBuffer);
+  const doubles = await File.query()
+    .select('sign')
+    .groupBy('sign')
+    .havingRaw('COUNT(*) > 1');
 
-  const doublers = await File.where('sign', fileSign).fetchAll({ require: false });
+  await async.eachSeries(doubles, async (double) => {
+    const { sign: fileSign } = double;
 
-  if (doublers) {
-    console.log(`--- file: ${filePath} ---`);
-    doublers.forEach((doubler) => {
-      console.log(`    has a double: ${doubler.get('filepath')}`);
-    });
-    console.log('\n');
-  }
-}
+    const doubleFiles = await File.where('sign', fileSign).fetchAll();
+    const doubleFilesPaths = doubleFiles.map((doubleFile) => doubleFile.get('filepath'));
 
-module.exports = async ({ dirpaths, onlyImages }) => {
-  const { services } = context();
-
-  const fileAccessors = services.util.makeFileAccessorsList({ onlyImages });
-
-  return async.eachSeries(dirpaths, async (dirpath) => (
-    services.util.processDirectory({
-      fileAccessors,
-      dirpath,
-      fileProcessor,
-    })
-  ));
+    logger(doubleFilesPaths);
+  });
 };

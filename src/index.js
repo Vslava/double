@@ -7,23 +7,21 @@ async function defaultHandler(handler) {
   process.exit(0);
 }
 
-const commonOptions = (_yargs) => {
-  _yargs.positional('dirname', {
-    describe: 'A directory where the files are placed',
-    type: 'string',
-  });
-  _yargs.option('only-images', {
-    describe: 'Only images will be processed',
-    type: 'boolean',
-  });
-};
-
 // eslint-disable-next-line no-unused-expressions
 yargs
   .command({
     command: 'collect [--only-images] <dirpath>',
     desc: 'Collect information about all files in the dirpath directory',
-    builder: commonOptions,
+    builder: (_yargs) => {
+      _yargs.positional('dirname', {
+        describe: 'A directory where the files are placed',
+        type: 'string',
+      });
+      _yargs.option('only-images', {
+        describe: 'Only images will be processed',
+        type: 'boolean',
+      });
+    },
     handler: async (argv) => {
       await defaultHandler(() => (
         context().services.collectFiles({
@@ -36,17 +34,13 @@ yargs
     },
   })
   .command({
-    command: 'find [--only-images] <dirpath>',
-    desc: 'Find doubles in the db for all files in the dirpath directory',
-    builder: commonOptions,
+    command: 'doubles',
+    desc: 'Find doubles in the db',
     handler: async (argv) => {
+      const { loggers } = context();
+
       await defaultHandler(() => (
-        context().services.findDoubles({
-          onlyImages: !!argv['only-images'],
-          dirpaths: [
-            argv.dirpath,
-          ],
-        })
+        context().services.findDoubles(loggers.doubleFiles)
       ), argv);
     },
   })
