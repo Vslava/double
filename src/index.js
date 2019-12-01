@@ -54,6 +54,17 @@ yargs
       ), argv);
     },
   })
+  .command({
+    command: 'purge',
+    desc: 'Purge the absent file paths in the db',
+    handler: async (argv) => {
+      const { loggers } = context();
+
+      await defaultHandler(() => (
+        context().services.purgeAbsentFiles({ logger: loggers.purgedFile })
+      ), argv);
+    },
+  })
   .scriptName('doubler')
   .strict()
   .demandCommand(1, 'You need at least one command before moving on')

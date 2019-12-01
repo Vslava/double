@@ -5,6 +5,9 @@ module.exports = (bookshelf) => (
     createNew(attrs) {
       return new this(attrs).save();
     },
+    findAllKnex() {
+      return this.query();
+    },
     findByFilePath(filePath) {
       return this
         .where('filepath', filePath)
@@ -18,6 +21,9 @@ module.exports = (bookshelf) => (
     },
     findAllForSign(sign) {
       return this.where('sign', sign).fetchAll();
+    },
+    deleteById(id) {
+      return new this({ id }).destroy();
     },
   })
 );
