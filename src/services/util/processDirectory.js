@@ -15,9 +15,9 @@ async function canProcessFile(filePath, fileAccessors) {
 }
 
 async function processDirectory({ dirpath, fileAccessors, fileProcessor }) {
-  const dirEntry = await fs.promises.opendir(dirpath);
+  const dirItems = await fs.promises.opendir(dirpath);
 
-  return async.eachSeries(dirEntry, async (dirItem) => {
+  await async.eachSeries(dirItems, async (dirItem) => {
     const dirItemPath = path.resolve(path.join(
       dirpath,
       dirItem.name,
@@ -35,7 +35,9 @@ async function processDirectory({ dirpath, fileAccessors, fileProcessor }) {
       return null;
     }
 
-    return fileProcessor && fileProcessor(dirItemPath);
+    return fileProcessor
+      ? fileProcessor(dirItemPath)
+      : null;
   });
 }
 
