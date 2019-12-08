@@ -4,9 +4,9 @@ const context = require('context');
 async function fileExistInDb(filePath) {
   const { File } = context().models;
 
-  const result = await File.findByFilePath(filePath);
+  const filesCount = await File.countByFilePath(filePath);
 
-  return !!result;
+  return filesCount > 0;
 }
 
 async function saveInfoAboutFile(filePath, options) {

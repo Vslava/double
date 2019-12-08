@@ -8,10 +8,10 @@ module.exports = (bookshelf) => (
     findAllKnex() {
       return this.query();
     },
-    findByFilePath(filePath) {
+    countByFilePath(filePath) {
       return this
         .where('filepath', filePath)
-        .fetch({ require: false });
+        .count();
     },
     findDoubleSignsKnex() {
       return this.query()
