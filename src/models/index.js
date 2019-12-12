@@ -4,12 +4,13 @@ const bookshelfModule = require('bookshelf');
 
 const moduleExports = require('requireindex')(__dirname);
 
-module.exports = (databaseConfig) => {
+function initializeModule(databaseConfig) {
   const knex = knexModule(databaseConfig);
   const bookshelf = bookshelfModule(knex);
 
-  const loadedModels = _.transform(moduleExports, (result, __, modelName) => {
-    result[modelName] = moduleExports[modelName](bookshelf);
+  const loadedModels = _.transform(moduleExports, (rslt, __, modelName) => {
+    // eslint-disable-next-line no-param-reassign
+    rslt[modelName] = moduleExports[modelName](bookshelf);
   }, {});
 
   const result = {
@@ -26,6 +27,16 @@ module.exports = (databaseConfig) => {
       enumerable: false,
     },
   });
+
+  return result;
+}
+
+let result;
+
+module.exports = (databaseConfig) => {
+  if (!result) {
+    result = initializeModule(databaseConfig);
+  }
 
   return result;
 };
