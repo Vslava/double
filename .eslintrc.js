@@ -5,7 +5,14 @@ module.exports = {
   },
   "env": {
     "node": true,
+    "jest/globals": true,
   },
+  "plugins": [
+    "jest",
+  ],
+  "extends": [
+    "plugin:jest/all",
+  ],
   "rules": {
     "no-console": "off",
   },
