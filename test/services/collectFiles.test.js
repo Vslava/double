@@ -1,6 +1,6 @@
 /* eslint-disable func-names */
 const path = require('path');
-const { assert } = require('chai');
+const { assert, expect } = require('chai');
 const appContext = require('context');
 
 describe(__filename, () => {
