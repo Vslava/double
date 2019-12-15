@@ -1,7 +1,5 @@
 /* eslint-disable func-names */
 const path = require('path');
-const { assert } = require('chai');
-const sinon = require('sinon');
 const appContext = require('context');
 
 describe(__filename, () => {
@@ -12,6 +10,8 @@ describe(__filename, () => {
   };
 
   it('shows files which have doubles in the db', async () => {
+    expect.hasAssertions();
+
     // init
     const { findDoubles } = appContext().services;
     const { File } = appContext().models;
@@ -39,20 +39,14 @@ describe(__filename, () => {
       sign: fileSigns.file2,
     }).save();
 
-    const loggerSpy = sinon.spy();
+    const loggerSpy = jest.fn();
 
     // process
     await findDoubles({ logger: loggerSpy });
 
     // check
-    assert.strictEqual(loggerSpy.callCount, 2);
-
-    const calls = [
-      loggerSpy.getCall(0).args[0],
-      loggerSpy.getCall(1).args[0],
-    ];
-
-    assert.deepInclude(calls, ['/test1/file1', '/test2/file1']);
-    assert.deepInclude(calls, ['/test1/file2', '/test2/file2']);
+    expect(loggerSpy).toHaveBeenCalledTimes(2);
+    expect(loggerSpy).toHaveBeenCalledWith(['/test1/file1', '/test2/file1']);
+    expect(loggerSpy).toHaveBeenCalledWith(['/test1/file2', '/test2/file2']);
   });
 });

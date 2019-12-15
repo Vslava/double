@@ -5,12 +5,16 @@ module.exports = {
   },
   "env": {
     "node": true,
-    "mocha": true,
+    "jest/globals": true,
   },
   "plugins": [
-    "mocha",
+    "jest",
+  ],
+  "extends": [
+    "plugin:jest/all",
   ],
   "rules": {
     "no-console": "off",
+    "jest/valid-title": "off",
   },
 };
