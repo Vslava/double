@@ -1,20 +1,15 @@
 /* eslint-disable func-names */
 const path = require('path');
-const { assert, expect } = require('chai');
 const appContext = require('context');
 
 describe(__filename, () => {
   function checkFunction(cachedFiles) {
-    return (dir, fileName, sign) => {
+    return (dir, fileName) => {
       const findFile = (filep) => cachedFiles.toArray().filter(
         (fileInfo) => (fileInfo.get('filepath') === filep),
       );
 
-      assert.strictEqual(
-        findFile(path.join(dir, fileName))[0].get('sign'),
-        sign,
-        `${fileName} wasn't signed correctly`,
-      );
+      return findFile(path.join(dir, fileName))[0].get('sign');
     };
   }
 
@@ -35,47 +30,58 @@ describe(__filename, () => {
     },
   };
 
-  beforeEach(function () {
-    const rootDir = path.join(this.fixtureDir, 'several_dirs');
-    this.dir1 = path.join(rootDir, 'dir1');
-    this.dir2 = path.join(rootDir, 'dir2');
-    this.theSame = path.join(rootDir, 'the_same');
-  });
+  function setupDirs() {
+    const rootDir = path.join(FIXTURE_DIR, 'several_dirs');
+
+    return {
+      dir1: path.join(rootDir, 'dir1'),
+      dir2: path.join(rootDir, 'dir2'),
+      theSame: path.join(rootDir, 'the_same'),
+    }
+  }
 
   describe('process all files', () => {
-    it('collect all files of the directories into the db', async function () {
+    it('collect all files of the directories into the db', async () => {
+      expect.hasAssertions();
+
       // init
+      const { dir1, dir2 } = setupDirs();
+
       const { collectFiles } = appContext().services;
       const { File } = appContext().models;
 
       // process
       await collectFiles({
-        dirpaths: [this.dir1, this.dir2],
+        dirpaths: [dir1, dir2],
       }, options);
 
       // check
       const cachedFiles = await File.fetchAll();
       const checkSign = checkFunction(cachedFiles);
 
-      assert.strictEqual(cachedFiles.length, 6, 'A number of cached files are not correct');
-      checkSign(this.dir1, 'file1', fileSigns.file1);
-      checkSign(this.dir1, 'file2', fileSigns.file2);
-      checkSign(this.dir1, 'pic.png', fileSigns['pic.png']);
-      checkSign(this.dir2, 'file3', fileSigns.file3);
-      checkSign(this.dir2, 'file4', fileSigns.file4);
-      checkSign(this.dir2, 'pic.jpeg', fileSigns['pic.jpeg']);
+      expect(cachedFiles).toHaveLength(6);
+      expect(checkSign(dir1, 'file1')).toBe(fileSigns.file1);
+      expect(checkSign(dir1, 'file2')).toBe( fileSigns.file2);
+      expect(checkSign(dir1, 'pic.png')).toBe(fileSigns['pic.png']);
+      expect(checkSign(dir2, 'file3')).toBe(fileSigns.file3);
+      expect(checkSign(dir2, 'file4')).toBe(fileSigns.file4);
+      expect(checkSign(dir2, 'pic.jpeg')).toBe(fileSigns['pic.jpeg']);
     });
   });
 
   describe('process only images', () => {
-    it('only collects image files from the directories into the db', async function () {
+    it('only collects image files from the directories into the db', async () => {
+      expect.hasAssertions();
+
       // init
+      const { dir1, dir2 } = setupDirs();
+
       const { collectFiles } = appContext().services;
       const { File } = appContext().models;
 
       // process
       await collectFiles({
-        dirpaths: [this.dir1, this.dir2],
+        dirpaths: [dir1, dir2],
         onlyImages: true,
       }, options);
 
@@ -83,63 +89,71 @@ describe(__filename, () => {
       const cachedFiles = await File.fetchAll();
       const checkSign = checkFunction(cachedFiles);
 
-      assert.strictEqual(cachedFiles.length, 2, 'A number of cached files are not correct');
-      checkSign(this.dir1, 'pic.png', fileSigns['pic.png']);
-      checkSign(this.dir2, 'pic.jpeg', fileSigns['pic.jpeg']);
+      expect(cachedFiles).toHaveLength(2);
+      expect(checkSign(dir1, 'pic.png')).toBe(fileSigns['pic.png']);
+      expect(checkSign(dir2, 'pic.jpeg')).toBe(fileSigns['pic.jpeg']);
     });
   });
 
-  context('if some of the files were already collected', () => {
-    it('ignores these files during file processing', async function () {
+  describe('if some of the files were already collected', () => {
+    it('ignores these files during file processing', async () => {
+      expect.hasAssertions();
+
       // init
+      const { dir1, dir2 } = setupDirs();
+
       const { collectFiles } = appContext().services;
       const { File } = appContext().models;
 
       await new File({
-        filepath: path.join(this.dir1, 'file1'),
+        filepath: path.join(dir1, 'file1'),
         sign: fileSigns.file1,
       }).save();
       await new File({
-        filepath: path.join(this.dir2, 'file3'),
+        filepath: path.join(dir2, 'file3'),
         sign: fileSigns.file3,
       }).save();
 
       // process
       await collectFiles({
-        dirpaths: [this.dir1, this.dir2],
+        dirpaths: [dir1, dir2],
       }, options);
 
       // check
       const cachedFiles = await File.fetchAll();
       const checkSign = checkFunction(cachedFiles);
 
-      assert.strictEqual(cachedFiles.length, 6, 'A number of cached files are not correct');
-      checkSign(this.dir1, 'file1', fileSigns.file1);
-      checkSign(this.dir1, 'file2', fileSigns.file2);
-      checkSign(this.dir1, 'pic.png', fileSigns['pic.png']);
-      checkSign(this.dir2, 'file3', fileSigns.file3);
-      checkSign(this.dir2, 'file4', fileSigns.file4);
-      checkSign(this.dir2, 'pic.jpeg', fileSigns['pic.jpeg']);
+      expect(cachedFiles).toHaveLength(6);
+      expect(checkSign(dir1, 'file1')).toBe(fileSigns.file1);
+      expect(checkSign(dir1, 'file2')).toBe(fileSigns.file2);
+      expect(checkSign(dir1, 'pic.png')).toBe(fileSigns['pic.png']);
+      expect(checkSign(dir2, 'file3')).toBe(fileSigns.file3);
+      expect(checkSign(dir2, 'file4')).toBe(fileSigns.file4);
+      expect(checkSign(dir2, 'pic.jpeg')).toBe(fileSigns['pic.jpeg']);
     });
   });
 
-  context('when there is a file with the same sign', () => {
-    it('collects it everyway', async function () {
+  describe('when there is a file with the same sign', () => {
+    it('collects it everyway', async () => {
+      expect.hasAssertions();
+
       // init
+      const { dir1, theSame } = setupDirs();
+
       const { collectFiles } = appContext().services;
       const { File } = appContext().models;
 
       // process
       await collectFiles({
-        dirpaths: [this.dir1, this.theSame],
+        dirpaths: [dir1, theSame],
       }, options);
 
       // check
       const cachedFiles = await File.fetchAll();
       const checkSign = checkFunction(cachedFiles);
 
-      checkSign(this.dir1, 'file1', fileSigns.file1);
-      checkSign(this.theSame, 'thesame1', fileSigns.thesame1);
+      expect(checkSign(dir1, 'file1')).toBe(fileSigns.file1);
+      expect(checkSign(theSame, 'thesame1')).toBe(fileSigns.thesame1);
     });
   });
 });

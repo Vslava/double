@@ -9,28 +9,35 @@ describe(__filename, () => {
     file2: '6174e909453ef9d1658f95856eea4c97',
   };
 
-  beforeEach(function () {
-    const rootDir = path.join(this.fixtureDir, 'several_dirs');
-    this.dir1 = path.join(rootDir, 'dir1');
-  });
+  function setupDirs() {
+    const rootDir = path.join(FIXTURE_DIR, 'several_dirs');
 
-  it('removes all absent files', async function () {
+    return {
+      dir1: path.join(rootDir, 'dir1'),
+    };
+  }
+
+  it('removes all absent files', async () => {
+    expect.hasAssertions();
+
     // init
+    const { dir1 } = setupDirs();
+
     const { purgeAbsentFiles } = appContext().services;
     const { File } = appContext().models;
     const logger = () => {};
 
     const file1 = await new File({
-      filepath: path.join(this.dir1, 'file1'),
+      filepath: path.join(dir1, 'file1'),
       sign: fileSigns.file1,
     }).save();
     const file2 = await new File({
-      filepath: path.join(this.dir1, 'file2'),
+      filepath: path.join(dir1, 'file2'),
       sign: fileSigns.file2,
     }).save();
 
     const absentFile = await new File({
-      filepath: path.join(this.dir1, 'file3'),
+      filepath: path.join(dir1, 'file3'),
       sign: 'abcdef',
     }).save();
 
@@ -42,7 +49,7 @@ describe(__filename, () => {
     const existFiles = await new File().where('id', '<>', absentFile.id).fetchAll();
     const existFilesIds = existFiles.map((item) => item.id);
 
-    assert.strictEqual(absentCount, 0);
-    assert.sameMembers(existFilesIds, [file1.id, file2.id]);
+    expect(absentCount).toBe(0);
+    expect(existFilesIds).toStrictEqual(expect.arrayContaining([file1.id, file2.id]));
   });
 });
