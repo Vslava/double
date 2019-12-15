@@ -7,7 +7,7 @@ const fsRead = util.promisify(fs.read);
 const START_FILE_BYTES_COUNT = 2000000;
 
 module.exports = async (filePath) => {
-  const fid = await fsOpen(filePath);
+  const fid = await fsOpen(filePath, 'r');
 
   const buf = Buffer.alloc(START_FILE_BYTES_COUNT);
 
