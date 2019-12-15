@@ -4,7 +4,6 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "knex": "./node_modules/.bin/knex",
     "test": "jest --forceExit --detectOpenHandles"
   },
   "engines": {
