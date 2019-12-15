@@ -15,5 +15,6 @@ module.exports = {
   ],
   "rules": {
     "no-console": "off",
+    "jest/valid-title": "off",
   },
 };
