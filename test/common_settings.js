@@ -2,7 +2,6 @@
 /* eslint-disable jest/no-hooks */
 const path = require('path');
 const async = require('async');
-const sinon = require('sinon');
 const context = require('context');
 
 global.FIXTURE_DIR = path.resolve('test/fixtures');
@@ -20,7 +19,5 @@ async function clearModelTables() {
 }
 
 afterEach(async function () {
-  sinon.restore();
-
   await clearModelTables();
 });
