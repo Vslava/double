@@ -1,5 +1,6 @@
-#!/bin/sh
+#!/bin/bash
 
-APPDIR=$HOME/Projects/doubler-js
+pwd_dir=$(pwd)
+script_dir=$(dirname $0)
 
-node $APPDIR/src/index.js $*
+node $script_dir/../src/index.js $*
