@@ -2,15 +2,14 @@ const _ = require('lodash');
 const yargs = require('yargs');
 const context = require('context');
 
+const { loggers } = context();
+
 async function defaultHandler(handler) {
   await handler();
-
   process.exit(0);
 }
 
 async function collectHandler(argv) {
-  const { loggers } = context();
-
   const collectLoggers = _.pick(loggers, [
     'fileAlreadyCollected',
     'fileProcessed',
@@ -29,16 +28,12 @@ async function collectHandler(argv) {
 }
 
 async function doublesHandler(argv) {
-  const { loggers } = context();
-
   await defaultHandler(() => (
     context().services.findDoubles({ logger: loggers.doubleFiles })
   ), argv);
 }
 
 async function purgeHandler(argv) {
-  const { loggers } = context();
-
   await defaultHandler(() => (
     context().services.purgeAbsentFiles({ logger: loggers.purgedFile })
   ), argv);
