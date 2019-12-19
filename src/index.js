@@ -8,6 +8,42 @@ async function defaultHandler(handler) {
   process.exit(0);
 }
 
+async function collectHandler(argv) {
+  const { loggers } = context();
+
+  const collectLoggers = _.pick(loggers, [
+    'fileAlreadyCollected',
+    'fileProcessed',
+  ]);
+
+  await defaultHandler(() => (
+    context().services.collectFiles({
+      onlyImages: !!argv['only-images'],
+      dirpaths: [
+        argv.dirpath,
+      ],
+    }, {
+      loggers: collectLoggers,
+    })
+  ), argv);
+}
+
+async function doublesHandler(argv) {
+  const { loggers } = context();
+
+  await defaultHandler(() => (
+    context().services.findDoubles({ logger: loggers.doubleFiles })
+  ), argv);
+}
+
+async function purgeHandler(argv) {
+  const { loggers } = context();
+
+  await defaultHandler(() => (
+    context().services.purgeAbsentFiles({ logger: loggers.purgedFile })
+  ), argv);
+}
+
 // eslint-disable-next-line no-unused-expressions
 yargs
   .command({
@@ -23,49 +59,19 @@ yargs
         type: 'boolean',
       });
     },
-    handler: async (argv) => {
-      const { loggers } = context();
-
-      const collectLoggers = _.pick(loggers, [
-        'fileAlreadyCollected',
-        'fileProcessed',
-      ]);
-
-      await defaultHandler(() => (
-        context().services.collectFiles({
-          onlyImages: !!argv['only-images'],
-          dirpaths: [
-            argv.dirpath,
-          ],
-        }, {
-          loggers: collectLoggers,
-        })
-      ), argv);
-    },
+    handler: collectHandler,
   })
   .command({
     command: 'doubles',
     desc: 'Find doubles in the db',
-    handler: async (argv) => {
-      const { loggers } = context();
-
-      await defaultHandler(() => (
-        context().services.findDoubles({ logger: loggers.doubleFiles })
-      ), argv);
-    },
+    handler: doublesHandler,
   })
   .command({
     command: 'purge',
     desc: 'Purge the absent file paths in the db',
-    handler: async (argv) => {
-      const { loggers } = context();
-
-      await defaultHandler(() => (
-        context().services.purgeAbsentFiles({ logger: loggers.purgedFile })
-      ), argv);
-    },
+    handler: purgeHandler,
   })
-  .scriptName('doubler')
+  .scriptName('doubler-js')
   .strict()
   .demandCommand(1, 'You need at least one command before moving on')
   .recommendCommands()
