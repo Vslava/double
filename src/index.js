@@ -1,43 +1,7 @@
-const _ = require('lodash');
 const yargs = require('yargs');
 const context = require('context');
 
 const { loggers } = context();
-
-async function defaultHandler(handler) {
-  await handler();
-  process.exit(0);
-}
-
-async function collectHandler(argv) {
-  const collectLoggers = _.pick(loggers, [
-    'fileAlreadyCollected',
-    'fileProcessed',
-  ]);
-
-  await defaultHandler(() => (
-    context().services.collectFiles({
-      onlyImages: !!argv['only-images'],
-      dirpaths: [
-        argv.dirpath,
-      ],
-    }, {
-      loggers: collectLoggers,
-    })
-  ), argv);
-}
-
-async function doublesHandler(argv) {
-  await defaultHandler(() => (
-    context().services.findDoubles({ logger: loggers.doubleFiles })
-  ), argv);
-}
-
-async function purgeHandler(argv) {
-  await defaultHandler(() => (
-    context().services.purgeAbsentFiles({ logger: loggers.purgedFile })
-  ), argv);
-}
 
 // eslint-disable-next-line no-unused-expressions
 yargs
@@ -54,17 +18,17 @@ yargs
         type: 'boolean',
       });
     },
-    handler: collectHandler,
+    handler: context().commandHandlers.collect,
   })
   .command({
     command: 'doubles',
     desc: 'Find doubles in the db',
-    handler: doublesHandler,
+    handler: context().commandHandlers.doubles,
   })
   .command({
     command: 'purge',
     desc: 'Purge the absent file paths in the db',
-    handler: purgeHandler,
+    handler: context().commandHandlers.purge,
   })
   .scriptName('doubler-js')
   .strict()
