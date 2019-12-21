@@ -3,7 +3,7 @@ const context = require('context');
 
 module.exports = async (argv) => {
   const ctx = context();
-  const { commandHandlers, loggers } = ctx;
+  const { commandHandlers, loggers, services } = ctx;
   const { handlerWrapper } = ctx.commandHandlers;
 
   const collectLoggers = _.pick(loggers, [
@@ -12,7 +12,7 @@ module.exports = async (argv) => {
   ]);
 
   await handlerWrapper(() => (
-    context().services.collectFiles({
+    services.collectFiles({
       onlyImages: !!argv['only-images'],
       dirpaths: [
         argv.dirpath,

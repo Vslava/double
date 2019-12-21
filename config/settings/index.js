@@ -1,6 +1,5 @@
 require('../init-dotenv');
 
-const _ = require('lodash');
 const defaults = require('./default.js');
 
 const env = process.env.NODE_ENV || 'development';

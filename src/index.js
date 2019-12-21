@@ -9,7 +9,7 @@ yargs
     command: 'collect [--only-images] <dirpath>',
     desc: 'Collect information about all files in the dirpath directory',
     builder: (_yargs) => {
-      _yargs.positional('dirname', {
+      _yargs.positional('dirpath', {
         describe: 'A directory where the files are placed',
         type: 'string',
       });
