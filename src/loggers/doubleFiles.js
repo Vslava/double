@@ -1,6 +1,7 @@
-module.exports = (doubleFilesPaths) => {
-  console.log('--- double files ---');
-  doubleFilesPaths.forEach((doubleFilePath) => {
+module.exports = (originFilePath, doubleFilePaths) => {
+  console.log(`--- double files for: ${originFilePath}`);
+
+  doubleFilePaths.forEach((doubleFilePath) => {
     console.log(doubleFilePath);
   });
 

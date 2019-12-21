@@ -5,14 +5,20 @@ module.exports = async (options) => {
   const { File } = context().models;
   const { logger } = options;
 
-  const doublesStream = File.findDoubleSignsKnex().stream();
+  const doublesStream = File.findDoublesKnex().stream();
 
   await async.each(doublesStream, async (double) => {
-    const { sign: fileSign } = double;
+    const {
+      filepath: originFilePath,
+      sign: fileSign
+    } = double;
 
     const doubleFiles = await File.findAllForSign(fileSign);
-    const doubleFilesPaths = doubleFiles.map((doubleFile) => doubleFile.get('filepath'));
 
-    logger(doubleFilesPaths);
+    const doubleFilePaths = doubleFiles
+      .map((doubleFile) => doubleFile.get('filepath'))
+      .filter((doubleFilePath) => doubleFilePath !== originFilePath);
+
+    logger(originFilePath, doubleFilePaths);
   });
 };

@@ -1,6 +1,10 @@
-module.exports = (bookshelf) => (
-  bookshelf.model('File', {
-    tableName: 'files',
+const TABLE_NAME = 'files';
+
+module.exports = (bookshelf) => {
+  const { knex } = bookshelf;
+
+  return bookshelf.model('File', {
+    tableName: TABLE_NAME,
   }, {
     createNew(attrs) {
       return new this(attrs).save();
@@ -13,17 +17,28 @@ module.exports = (bookshelf) => (
         .where('filepath', filePath)
         .count();
     },
-    findDoubleSignsKnex() {
-      return this.query()
-        .select('sign')
-        .groupBy('sign')
-        .havingRaw('COUNT(*) > 1');
+    findDoublesKnex() {
+      return knex
+        .raw(`
+          SELECT *
+            FROM ${TABLE_NAME}
+            WHERE sign IN (
+              SELECT sign
+              FROM ${TABLE_NAME}
+              GROUP BY sign
+              HAVING COUNT(*) > 1
+            )
+            ORDER BY filepath
+        `);
     },
     findAllForSign(sign) {
-      return this.where('sign', sign).fetchAll();
+      return this
+        .where('sign', sign)
+        .orderBy('filepath')
+        .fetchAll();
     },
     deleteById(id) {
       return new this({ id }).destroy();
     },
   })
-);
+};
