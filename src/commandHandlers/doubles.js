@@ -1,3 +1,4 @@
+const path = require('path');
 const context = require('context');
 
 module.exports = async (argv) => {
@@ -5,7 +6,13 @@ module.exports = async (argv) => {
   const { commandHandlers, loggers, services } = ctx;
   const { handlerWrapper } = ctx.commandHandlers;
 
+  const directoryPath = argv.dirpath && path.resolve(argv.dirpath);
+
   await handlerWrapper(() => (
-    services.findDoubles({ logger: loggers.doubleFiles })
+    services.findDoubles({
+      directoryPath,
+    }, {
+      logger: loggers.doubleFiles,
+    })
   ), argv);
 };

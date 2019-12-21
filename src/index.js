@@ -21,8 +21,14 @@ yargs
     handler: context().commandHandlers.collect,
   })
   .command({
-    command: 'doubles',
+    command: 'doubles [dirpath]',
     desc: 'Find doubles in the db',
+    builder: (_yargs) => {
+      _yargs.positional('dirpath', {
+        describe: 'A directory where the files will be being found',
+        type: 'string',
+      })
+    },
     handler: context().commandHandlers.doubles,
   })
   .command({

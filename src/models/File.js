@@ -17,7 +17,15 @@ module.exports = (bookshelf) => {
         .where('filepath', filePath)
         .count();
     },
-    findDoublesKnex() {
+    findDoublesKnex(directoryPath) {
+      let condition = '';
+      const binding = {};
+
+      if (directoryPath) {
+        condition = ` AND filepath LIKE :dirpath`
+        binding.dirpath = `${directoryPath}%`;
+      }
+
       return knex
         .raw(`
           SELECT *
@@ -28,8 +36,9 @@ module.exports = (bookshelf) => {
               GROUP BY sign
               HAVING COUNT(*) > 1
             )
+            ${condition}
             ORDER BY filepath
-        `);
+        `, binding);
     },
     findAllForSign(sign) {
       return this

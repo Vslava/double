@@ -1,11 +1,11 @@
 const async = require('async');
 const context = require('context');
 
-module.exports = async (options) => {
+module.exports = async ({ directoryPath }, options) => {
   const { File } = context().models;
   const { logger } = options;
 
-  const doublesStream = File.findDoublesKnex().stream();
+  const doublesStream = File.findDoublesKnex(directoryPath).stream();
 
   await async.each(doublesStream, async (double) => {
     const {
