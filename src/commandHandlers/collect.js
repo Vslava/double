@@ -3,7 +3,7 @@ const context = require('context');
 
 module.exports = async (argv) => {
   const ctx = context();
-  const { commandHandlers, loggers, services } = ctx;
+  const { loggers, services } = ctx;
   const { handlerWrapper } = ctx.commandHandlers;
 
   const collectLoggers = _.pick(loggers, [
@@ -20,5 +20,5 @@ module.exports = async (argv) => {
     }, {
       loggers: collectLoggers,
     })
-  ), argv);
+  ));
 };

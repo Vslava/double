@@ -1,7 +1,7 @@
 const yargs = require('yargs');
 const context = require('context');
 
-const { loggers } = context();
+const { loggers, commandHandlers } = context();
 
 // eslint-disable-next-line no-unused-expressions
 yargs
@@ -18,7 +18,7 @@ yargs
         type: 'boolean',
       });
     },
-    handler: context().commandHandlers.collect,
+    handler: commandHandlers.collect,
   })
   .command({
     command: 'doubles [dirpath]',
@@ -29,12 +29,12 @@ yargs
         type: 'string',
       })
     },
-    handler: context().commandHandlers.doubles,
+    handler: commandHandlers.doubles,
   })
   .command({
     command: 'purge',
     desc: 'Purge the absent file paths in the db',
-    handler: context().commandHandlers.purge,
+    handler: commandHandlers.purge,
   })
   .scriptName('doubler-js')
   .strict()

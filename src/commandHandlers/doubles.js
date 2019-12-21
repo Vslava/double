@@ -3,7 +3,7 @@ const context = require('context');
 
 module.exports = async (argv) => {
   const ctx = context();
-  const { commandHandlers, loggers, services } = ctx;
+  const { loggers, services } = ctx;
   const { handlerWrapper } = ctx.commandHandlers;
 
   const directoryPath = argv.dirpath && path.resolve(argv.dirpath);
@@ -14,5 +14,5 @@ module.exports = async (argv) => {
     }, {
       logger: loggers.doubleFiles,
     })
-  ), argv);
+  ));
 };
