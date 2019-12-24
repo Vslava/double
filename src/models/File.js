@@ -9,8 +9,28 @@ module.exports = (bookshelf) => {
     createNew(attrs) {
       return new this(attrs).save();
     },
+    update(id, attrs) {
+      return new this({ id }).save(attrs, { method: 'update' });
+    },
     findAllKnex() {
-      return this.query();
+      return this.query().orderBy('filepath');
+    },
+    async *findAllGen() {
+      const size = 100;
+      let offset = 0;
+
+      while(true) {
+        const items = await this.query().offset(offset).limit(size).orderBy('filepath');
+        if (items.length === 0) {
+          break;
+        }
+
+        for await (const item of items) {
+          yield item;
+        }
+
+        offset += size;
+      }
     },
     countByFilePath(filePath) {
       return this

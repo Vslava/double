@@ -21,6 +21,11 @@ yargs
     handler: commandHandlers.collect,
   })
   .command({
+    command: 'rescan',
+    desc: 'Rescan all directories saved in the db',
+    handler: commandHandlers.rescan,
+  })
+  .command({
     command: 'doubles [dirpath]',
     desc: 'Find doubles in the db',
     builder: (_yargs) => {
