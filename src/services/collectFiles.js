@@ -15,8 +15,7 @@ async function saveInfoAboutFile(filePath, options) {
   const { File } = ctx.models;
   const { loggers } = options;
 
-  const fileBuffer = await services.util.readFileBeginning(filePath);
-  const fileSign = await services.util.createFileSign(fileBuffer);
+  const fileSign = await services.util.createFileSign(filePath);
 
   loggers.fileProcessed(filePath);
 
