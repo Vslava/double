@@ -3,17 +3,20 @@ const path = require('path');
 const appContext = require('context');
 
 describe(__filename, () => {
-  const fileSigns = {
+  const { purgeAbsentFiles } = appContext().services;
+  const { File } = appContext().models;
+
+  const fileSigns = Object.freeze({
     file1: 'b6ee2058d98027764d589b1e3a102c39',
     file2: '6174e909453ef9d1658f95856eea4c97',
-  };
+  });
 
   function setupDirs() {
     const rootDir = path.join(FIXTURE_DIR, 'several_dirs');
 
-    return {
+    return Object.freeze({
       dir1: path.join(rootDir, 'dir1'),
-    };
+    });
   }
 
   it('removes all absent files', async () => {
@@ -22,8 +25,6 @@ describe(__filename, () => {
     // init
     const { dir1 } = setupDirs();
 
-    const { purgeAbsentFiles } = appContext().services;
-    const { File } = appContext().models;
     const logger = () => {};
 
     const file1 = await new File({

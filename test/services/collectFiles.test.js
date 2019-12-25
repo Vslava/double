@@ -3,6 +3,9 @@ const path = require('path');
 const appContext = require('context');
 
 describe(__filename, () => {
+  const { collectFiles } = appContext().services;
+  const { File } = appContext().models;
+
   function checkFunction(cachedFiles) {
     return (dir, fileName) => {
       const findFile = (filep) => cachedFiles.toArray().filter(
@@ -13,7 +16,7 @@ describe(__filename, () => {
     };
   }
 
-  const fileSigns = {
+  const fileSigns = Object.freeze({
     file1: 'b6ee2058d98027764d589b1e3a102c39',
     file2: '6174e909453ef9d1658f95856eea4c97',
     'pic.png': '006321de634e21d0ba7ac4557e515887',
@@ -21,7 +24,7 @@ describe(__filename, () => {
     file4: '2241b4b34e81a6d0829e944f89a35d1e',
     'pic.jpeg': '7a86539287b66fcb477a754f7f861f6a',
     thesame1: 'b6ee2058d98027764d589b1e3a102c39',
-  };
+  });
 
   const options = {
     loggers: {
@@ -33,11 +36,11 @@ describe(__filename, () => {
   function setupDirs() {
     const rootDir = path.join(FIXTURE_DIR, 'several_dirs');
 
-    return {
+    return Object.freeze({
       dir1: path.join(rootDir, 'dir1'),
       dir2: path.join(rootDir, 'dir2'),
       theSame: path.join(rootDir, 'the_same'),
-    }
+    });
   }
 
   describe('process all files', () => {
@@ -46,9 +49,6 @@ describe(__filename, () => {
 
       // init
       const { dir1, dir2 } = setupDirs();
-
-      const { collectFiles } = appContext().services;
-      const { File } = appContext().models;
 
       // process
       await collectFiles({
@@ -76,9 +76,6 @@ describe(__filename, () => {
       // init
       const { dir1, dir2 } = setupDirs();
 
-      const { collectFiles } = appContext().services;
-      const { File } = appContext().models;
-
       // process
       await collectFiles({
         dirpaths: [dir1, dir2],
@@ -101,9 +98,6 @@ describe(__filename, () => {
 
       // init
       const { dir1, dir2 } = setupDirs();
-
-      const { collectFiles } = appContext().services;
-      const { File } = appContext().models;
 
       await new File({
         filepath: path.join(dir1, 'file1'),
@@ -139,9 +133,6 @@ describe(__filename, () => {
 
       // init
       const { dir1, theSame } = setupDirs();
-
-      const { collectFiles } = appContext().services;
-      const { File } = appContext().models;
 
       // process
       await collectFiles({

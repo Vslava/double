@@ -3,20 +3,20 @@ const path = require('path');
 const appContext = require('context');
 
 describe(__filename, () => {
-  const fileSigns = {
+  const { findDoubles } = appContext().services;
+  const { File } = appContext().models;
+
+  const fileSigns = Object.freeze({
     file1: 'b6ee2058d98027764d589b1e3a102c39',
     file2: '6174e909453ef9d1658f95856eea4c97',
     file3: '02a73a746f187bbdee14bcf8b752d643',
-  };
+  });
 
   describe('find all files', () => {
     it('shows files which have doubles in the db', async () => {
       expect.hasAssertions();
 
       // init
-      const { findDoubles } = appContext().services;
-      const { File } = appContext().models;
-
       await new File({
         filepath: path.join('/test1', 'file1'),
         sign: fileSigns.file1,
@@ -59,9 +59,6 @@ describe(__filename, () => {
       expect.hasAssertions();
 
       // init
-      const { findDoubles } = appContext().services;
-      const { File } = appContext().models;
-
       await new File({
         filepath: path.join('/dir/test1', 'file1'),
         sign: fileSigns.file1,

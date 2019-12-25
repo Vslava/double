@@ -5,10 +5,10 @@ describe(__filename, () => {
   const { File } = appContext().models;
   const { rescanFiles } = appContext().services;
 
-  const fileSigns = {
+  const fileSigns = Object.freeze({
     file1: 'b6ee2058d98027764d589b1e3a102c39',
     file2: '6174e909453ef9d1658f95856eea4c97',
-  };
+  });
 
   const options = {
     loggers: {
@@ -20,9 +20,9 @@ describe(__filename, () => {
   function setupDirs() {
     const rootDir = path.join(FIXTURE_DIR, 'several_dirs');
 
-    return {
+    return Object.freeze({
       dir1: path.join(rootDir, 'dir1'),
-    }
+    });
   }
 
   it('creates a new sign for the file', async () => {
