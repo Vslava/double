@@ -1,3 +1,4 @@
+/* global FIXTURE_DIR */
 /* eslint-disable func-names */
 const path = require('path');
 const appContext = require('context');
@@ -61,7 +62,7 @@ describe(__filename, () => {
 
       expect(cachedFiles).toHaveLength(6);
       expect(checkSign(dir1, 'file1')).toBe(fileSigns.file1);
-      expect(checkSign(dir1, 'file2')).toBe( fileSigns.file2);
+      expect(checkSign(dir1, 'file2')).toBe(fileSigns.file2);
       expect(checkSign(dir1, 'pic.png')).toBe(fileSigns['pic.png']);
       expect(checkSign(dir2, 'file3')).toBe(fileSigns.file3);
       expect(checkSign(dir2, 'file4')).toBe(fileSigns.file4);

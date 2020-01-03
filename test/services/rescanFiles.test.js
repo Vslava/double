@@ -1,3 +1,4 @@
+/* global FIXTURE_DIR */
 const path = require('path');
 const appContext = require('context');
 
@@ -63,7 +64,7 @@ describe(__filename, () => {
         filepath: path.join(dir1, 'file1'),
         sign: fileSigns.file1,
       }).save();
-      const rescanFile = await new File({
+      await new File({
         filepath: fakeFilePath,
         sign: fileSigns.file2,
       }).save();

@@ -18,6 +18,6 @@ async function clearModelTables() {
   ));
 }
 
-afterEach(async function () {
+afterEach(async () => {
   await clearModelTables();
 });

@@ -1,3 +1,4 @@
+/* global FIXTURE_DIR */
 /* eslint-disable func-names */
 const path = require('path');
 const appContext = require('context');

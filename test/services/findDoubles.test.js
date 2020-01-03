@@ -47,10 +47,10 @@ describe(__filename, () => {
 
       // check
       expect(loggerSpy).toHaveBeenCalledTimes(4);
-      expect(loggerSpy).toHaveBeenCalledWith('/test1/file1', [ '/test2/file1' ]);
-      expect(loggerSpy).toHaveBeenCalledWith('/test1/file2', [ '/test2/file2' ]);
-      expect(loggerSpy).toHaveBeenCalledWith('/test2/file1', [ '/test1/file1' ]);
-      expect(loggerSpy).toHaveBeenCalledWith('/test2/file2', [ '/test1/file2' ]);
+      expect(loggerSpy).toHaveBeenCalledWith('/test1/file1', ['/test2/file1']);
+      expect(loggerSpy).toHaveBeenCalledWith('/test1/file2', ['/test2/file2']);
+      expect(loggerSpy).toHaveBeenCalledWith('/test2/file1', ['/test1/file1']);
+      expect(loggerSpy).toHaveBeenCalledWith('/test2/file2', ['/test1/file2']);
     });
   });
 
@@ -93,8 +93,8 @@ describe(__filename, () => {
 
       // check
       expect(loggerSpy).toHaveBeenCalledTimes(2);
-      expect(loggerSpy).toHaveBeenCalledWith('/dir/test1/file1', [ '/test2/file1' ]);
-      expect(loggerSpy).toHaveBeenCalledWith('/dir/test1/file2', [ '/test2/file2' ]);
+      expect(loggerSpy).toHaveBeenCalledWith('/dir/test1/file1', ['/test2/file1']);
+      expect(loggerSpy).toHaveBeenCalledWith('/dir/test1/file2', ['/test2/file2']);
     });
   });
 });

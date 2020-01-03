@@ -17,5 +17,10 @@ module.exports = {
   "rules": {
     "no-console": "off",
     "jest/valid-title": "off",
+    "import/no-extraneous-dependencies": [
+      "error", {
+        "devDependencies": true,
+      },
+    ],
   },
 };

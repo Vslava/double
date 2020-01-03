@@ -32,7 +32,7 @@ yargs
       _yargs.positional('dirpath', {
         describe: 'A directory where the files will be being found',
         type: 'string',
-      })
+      });
     },
     handler: commandHandlers.doubles,
   })

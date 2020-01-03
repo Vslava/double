@@ -10,7 +10,7 @@ module.exports = async ({ directoryPath }, options) => {
   await async.each(doublesStream, async (double) => {
     const {
       filepath: originFilePath,
-      sign: fileSign
+      sign: fileSign,
     } = double;
 
     const doubleFiles = await File.findAllForSign(fileSign);

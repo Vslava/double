@@ -15,16 +15,18 @@ module.exports = (bookshelf) => {
     findAllKnex() {
       return this.query().orderBy('filepath');
     },
-    async *findAllGen() {
+    async* findAllGen() {
       const size = 100;
       let offset = 0;
 
-      while(true) {
+      while (true) {
+        // eslint-disable-next-line no-await-in-loop
         const items = await this.query().offset(offset).limit(size).orderBy('filepath');
         if (items.length === 0) {
           break;
         }
 
+        // eslint-disable-next-line no-await-in-loop, no-restricted-syntax
         for await (const item of items) {
           yield item;
         }
@@ -42,7 +44,7 @@ module.exports = (bookshelf) => {
       const binding = {};
 
       if (directoryPath) {
-        condition = ` AND filepath LIKE :dirpath`
+        condition = ' AND filepath LIKE :dirpath';
         binding.dirpath = `${directoryPath}%`;
       }
 
@@ -69,5 +71,5 @@ module.exports = (bookshelf) => {
     deleteById(id) {
       return new this({ id }).destroy();
     },
-  })
+  });
 };

@@ -1,6 +1,6 @@
 const context = require('context');
 
-module.exports = async (argv) => {
+module.exports = async () => {
   const ctx = context();
   const { loggers, services } = ctx;
   const { handlerWrapper } = ctx.commandHandlers;
