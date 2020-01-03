@@ -20,7 +20,7 @@
     "lodash": "^4.17.15",
     "requireindex": "^1.2.0",
     "sqlite3": "^4.1.1",
-    "yargs": "^14.2.0"
+    "yargs": "^15.1.0"
   },
   "devDependencies": {
     "dotenv": "^8.2.0",
