@@ -1,7 +1,7 @@
 const yargs = require('yargs');
 const context = require('context');
 
-const { loggers, commandHandlers } = context();
+const { commandHandlers } = context();
 
 // eslint-disable-next-line no-unused-expressions
 yargs
