@@ -1,5 +1,4 @@
 module.exports = {
-  "extends": "airbnb-base",
   "parserOptions": {
     "ecmaVersion": 2018,
   },
@@ -11,6 +10,8 @@ module.exports = {
     "jest",
   ],
   "extends": [
+    "airbnb-base",
+    "eslint:recommended",
     "plugin:jest/all",
   ],
   "rules": {
