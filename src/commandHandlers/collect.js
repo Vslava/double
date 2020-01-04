@@ -6,7 +6,7 @@ module.exports = async (argv) => {
   const { loggers, services } = ctx;
   const { handlerWrapper } = ctx.commandHandlers;
 
-  const collectLoggers = _.pick(loggers, [
+  const commandLoggers = _.pick(loggers, [
     'fileAlreadyCollected',
     'fileProcessed',
   ]);
@@ -18,7 +18,7 @@ module.exports = async (argv) => {
         argv.dirpath,
       ],
     }, {
-      loggers: collectLoggers,
+      loggers: commandLoggers,
     })
   ));
 };
