@@ -17,7 +17,9 @@ async function canProcessFile(filePath, fileAccessors) {
 async function processDirectory({ dirpath, fileAccessors = [], fileProcessor }) {
   const dirItems = await fs.promises.opendir(dirpath);
 
-  await async.eachSeries(dirItems, async (dirItem) => {
+  const sortedDirItems = await async.sortBy(dirItems, async (dirItem) => dirItem.name);
+
+  await async.eachSeries(sortedDirItems, async (dirItem) => {
     const dirItemPath = path.resolve(path.join(
       dirpath,
       dirItem.name,
