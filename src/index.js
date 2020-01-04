@@ -41,7 +41,23 @@ yargs
     desc: 'Purge the absent file paths in the db',
     handler: commandHandlers.purge,
   })
-  .scriptName('doubler-js')
+  .command({
+    command: 'just-scan [--show-doubles] <dirpath>',
+    desc: 'Scan files in the specified directory. '
+        + 'It shows the files having doubles in the db and without them',
+    builder: (_yargs) => {
+      _yargs.positional('dirpath', {
+        describe: 'A directory where the files are being scanned',
+        type: 'string',
+      });
+      _yargs.option('show-doubles', {
+        describe: 'Show doubles for the files having them',
+        type: 'boolean',
+      });
+    },
+    handler: commandHandlers.justScan,
+  })
+  .scriptName('doubler')
   .strict()
   .demandCommand(1, 'You need at least one command before moving on')
   .recommendCommands()
