@@ -5,7 +5,7 @@ module.exports = async ({ directoryPath }, options) => {
   const { File } = context().models;
   const { logger } = options;
 
-  const doublesStream = File.findDoublesKnex(directoryPath).stream();
+  const doublesStream = File.findDoublesInDirectoryStream(directoryPath);
 
   await async.each(doublesStream, async (double) => {
     const {
@@ -13,12 +13,12 @@ module.exports = async ({ directoryPath }, options) => {
       sign: fileSign,
     } = double;
 
-    const doubleFiles = await File.findAllForSign(fileSign);
+    const doubleFilesForSign = await File.findAllForSign(fileSign);
 
-    const doubleFilePaths = doubleFiles
-      .map((doubleFile) => doubleFile.get('filepath'))
+    const doubleFilePathsForSign = doubleFilesForSign
+      .map((doubleFile) => doubleFile.filepath)
       .filter((doubleFilePath) => doubleFilePath !== originFilePath);
 
-    logger(originFilePath, doubleFilePaths);
+    logger(originFilePath, doubleFilePathsForSign);
   });
 };

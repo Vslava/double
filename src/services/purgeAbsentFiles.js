@@ -6,7 +6,7 @@ module.exports = async (options) => {
   const { File } = context().models;
   const { logger } = options;
 
-  const allFilesStream = File.findAllKnex().stream();
+  const allFilesStream = File.findAllStream();
 
   await async.each(allFilesStream, async (file) => {
     const filePath = file.filepath;

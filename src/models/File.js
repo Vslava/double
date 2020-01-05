@@ -6,14 +6,14 @@ module.exports = (bookshelf) => {
   return bookshelf.model('File', {
     tableName: TABLE_NAME,
   }, {
-    createNew(attrs) {
-      return new this(attrs).save();
+    async createNew(attrs) {
+      await new this(attrs).save();
     },
-    update(id, attrs) {
-      return new this({ id }).save(attrs, { method: 'update' });
+    async update(id, attrs) {
+      await new this({ id }).save(attrs, { method: 'update' });
     },
-    findAllKnex() {
-      return this.query().orderBy('filepath');
+    findAllStream() {
+      return this.query().orderBy('filepath').stream();
     },
     async* findAllGen() {
       const size = 100;
@@ -34,12 +34,12 @@ module.exports = (bookshelf) => {
         offset += size;
       }
     },
-    countByFilePath(filePath) {
+    async countByFilePath(filePath) {
       return this
         .where('filepath', filePath)
         .count();
     },
-    findDoublesKnex(directoryPath) {
+    findDoublesInDirectoryStream(directoryPath) {
       let condition = '';
       const binding = {};
 
@@ -60,16 +60,19 @@ module.exports = (bookshelf) => {
             )
             ${condition}
             ORDER BY filepath
-        `, binding);
+        `, binding)
+        .stream();
     },
-    findAllForSign(sign) {
-      return this
+    async findAllForSign(sign) {
+      const records = await this
         .where('sign', sign)
         .orderBy('filepath')
         .fetchAll();
+
+      return records.toJSON();
     },
-    deleteById(id) {
-      return new this({ id }).destroy();
+    async deleteById(id) {
+      await new this({ id }).destroy();
     },
   });
 };

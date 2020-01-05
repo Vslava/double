@@ -2,12 +2,12 @@
 const context = require('context');
 
 function showFileAndDoubles(filePath, doubles, loggers) {
-  const doubleFilePaths = doubles.map((double) => double.get('filepath'));
+  const doubleFilePaths = doubles.map((double) => double.filepath);
 
-  loggers.fileWithDoubles({
+  loggers.fileWithDoubles(
     filePath,
     doubleFilePaths,
-  });
+  );
 }
 
 async function fileProcessor({ filePath, showDoubles }, options) {
@@ -26,7 +26,7 @@ async function fileProcessor({ filePath, showDoubles }, options) {
     if (showDoubles) {
       showFileAndDoubles(filePath, foundDoubles, loggers);
     } else {
-      loggers.fileWithDoubles({ filePath });
+      loggers.fileWithDoubles(filePath);
     }
   }
 }
