@@ -2,9 +2,8 @@ const async = require('async');
 const context = require('context');
 
 module.exports = async (options) => {
-  const ctx = context();
-  const { util } = ctx.services;
-  const { File } = ctx.models;
+  const { util } = context().services;
+  const { File } = context().models;
   const { logger } = options;
 
   const allFilesStream = File.findAllKnex().stream();

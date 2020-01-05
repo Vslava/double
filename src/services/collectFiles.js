@@ -10,9 +10,8 @@ async function fileExistInDb(filePath) {
 }
 
 async function saveInfoAboutFile(filePath, options) {
-  const ctx = context();
-  const { services } = ctx;
-  const { File } = ctx.models;
+  const { services } = context();
+  const { File } = context().models;
   const { loggers } = options;
 
   const fileSign = await services.util.createFileSign(filePath);
