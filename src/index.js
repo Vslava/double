@@ -30,7 +30,7 @@ yargs
     desc: 'Find doubles in the db',
     builder: (_yargs) => {
       _yargs.positional('dirpath', {
-        describe: 'A directory where the files will be being found',
+        describe: 'A directory to filter files only in it',
         type: 'string',
       });
     },
@@ -44,7 +44,7 @@ yargs
   .command({
     command: 'just-scan [--show-doubles] <dirpath>',
     desc: 'Scan files in the specified directory. '
-        + 'It shows the files having doubles in the db and without them',
+        + 'It shows the files with and without doubles in the db',
     builder: (_yargs) => {
       _yargs.positional('dirpath', {
         describe: 'A directory where the files are being scanned',
