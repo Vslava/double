@@ -5,11 +5,11 @@ module.exports = async (argv) => {
   const { loggers, services } = context();
   const { handlerWrapper } = context().commandHandlers;
 
-  const directoryPath = argv.dirpath && path.resolve(argv.dirpath);
+  const dirpath = argv.dirpath && path.resolve(argv.dirpath);
 
   await handlerWrapper(() => (
     services.findDoubles({
-      directoryPath,
+      dirpath,
     }, {
       logger: loggers.doubleFiles,
     })

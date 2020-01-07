@@ -86,7 +86,7 @@ describe(__filename, () => {
 
       // process
       await findDoubles({
-        directoryPath: '/dir',
+        dirpath: '/dir',
       }, {
         logger: loggerSpy,
       });

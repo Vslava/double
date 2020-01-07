@@ -1,11 +1,11 @@
 const async = require('async');
 const context = require('context');
 
-module.exports = async ({ directoryPath }, options) => {
+module.exports = async ({ dirpath }, options) => {
   const { File } = context().models;
   const { logger } = options;
 
-  const doublesStream = File.findDoublesInDirectoryStream(directoryPath);
+  const doublesStream = File.findDoublesInDirectoryStream(dirpath);
 
   await async.each(doublesStream, async (double) => {
     const {
