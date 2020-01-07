@@ -2,9 +2,8 @@ const path = require('path');
 const context = require('context');
 
 module.exports = async (argv) => {
-  const ctx = context();
-  const { loggers, services } = ctx;
-  const { handlerWrapper } = ctx.commandHandlers;
+  const { loggers, services } = context();
+  const { handlerWrapper } = context().commandHandlers;
 
   const directoryPath = argv.dirpath && path.resolve(argv.dirpath);
 

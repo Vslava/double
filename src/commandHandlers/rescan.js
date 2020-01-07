@@ -2,9 +2,8 @@ const _ = require('lodash');
 const context = require('context');
 
 module.exports = async () => {
-  const ctx = context();
-  const { loggers, services } = ctx;
-  const { handlerWrapper } = ctx.commandHandlers;
+  const { loggers, services } = context();
+  const { handlerWrapper } = context().commandHandlers;
 
   const collectLoggers = _.pick(loggers, [
     'fileAbsent',
