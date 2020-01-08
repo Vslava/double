@@ -1,10 +1,9 @@
 /* eslint-disable jest/require-top-level-describe */
 /* eslint-disable jest/no-hooks */
-const path = require('path');
 const async = require('async');
 const context = require('context');
 
-global.FIXTURE_DIR = path.resolve('test/fixtures');
+require('./globals');
 
 async function clearModelTables() {
   const ctx = context();

@@ -1,4 +1,6 @@
-/* global FIXTURE_DIR */
+/* global FILE_SIGNS */
+/* global FILE_PATHS */
+/* global DIRS */
 /* eslint-disable func-names */
 const path = require('path');
 const appContext = require('context');
@@ -17,32 +19,12 @@ describe(__filename, () => {
     };
   }
 
-  const fileSigns = Object.freeze({
-    file1: 'b6ee2058d98027764d589b1e3a102c39',
-    file2: '6174e909453ef9d1658f95856eea4c97',
-    'pic.png': '006321de634e21d0ba7ac4557e515887',
-    file3: '02a73a746f187bbdee14bcf8b752d643',
-    file4: '2241b4b34e81a6d0829e944f89a35d1e',
-    'pic.jpeg': '7a86539287b66fcb477a754f7f861f6a',
-    thesame1: 'b6ee2058d98027764d589b1e3a102c39',
-  });
-
-  function setupDirs() {
-    const rootDir = path.join(FIXTURE_DIR, 'several_dirs');
-
-    return Object.freeze({
-      dir1: path.join(rootDir, 'dir1'),
-      dir2: path.join(rootDir, 'dir2'),
-      theSame: path.join(rootDir, 'the_same'),
-    });
-  }
-
   describe('process all files', () => {
     it('collect all files of the directories into the db', async () => {
       expect.hasAssertions();
 
       // init
-      const { dir1, dir2 } = setupDirs();
+      const { dir1, dir2 } = DIRS;
 
       // process
       await collect({ dirpath: dir1 });
@@ -53,12 +35,12 @@ describe(__filename, () => {
       const checkSign = checkFunction(cachedFiles);
 
       expect(cachedFiles).toHaveLength(6);
-      expect(checkSign(dir1, 'file1')).toBe(fileSigns.file1);
-      expect(checkSign(dir1, 'file2')).toBe(fileSigns.file2);
-      expect(checkSign(dir1, 'pic.png')).toBe(fileSigns['pic.png']);
-      expect(checkSign(dir2, 'file3')).toBe(fileSigns.file3);
-      expect(checkSign(dir2, 'file4')).toBe(fileSigns.file4);
-      expect(checkSign(dir2, 'pic.jpeg')).toBe(fileSigns['pic.jpeg']);
+      expect(checkSign(dir1, 'file1')).toBe(FILE_SIGNS.file1);
+      expect(checkSign(dir1, 'file2')).toBe(FILE_SIGNS.file2);
+      expect(checkSign(dir1, 'pic.png')).toBe(FILE_SIGNS['pic.png']);
+      expect(checkSign(dir2, 'file3')).toBe(FILE_SIGNS.file3);
+      expect(checkSign(dir2, 'file4')).toBe(FILE_SIGNS.file4);
+      expect(checkSign(dir2, 'pic.jpeg')).toBe(FILE_SIGNS['pic.jpeg']);
     });
   });
 
@@ -67,7 +49,7 @@ describe(__filename, () => {
       expect.hasAssertions();
 
       // init
-      const { dir1, dir2 } = setupDirs();
+      const { dir1, dir2 } = DIRS;
 
       // process
       await collect({ dirpath: dir1, 'only-images': true });
@@ -78,8 +60,8 @@ describe(__filename, () => {
       const checkSign = checkFunction(cachedFiles);
 
       expect(cachedFiles).toHaveLength(2);
-      expect(checkSign(dir1, 'pic.png')).toBe(fileSigns['pic.png']);
-      expect(checkSign(dir2, 'pic.jpeg')).toBe(fileSigns['pic.jpeg']);
+      expect(checkSign(dir1, 'pic.png')).toBe(FILE_SIGNS['pic.png']);
+      expect(checkSign(dir2, 'pic.jpeg')).toBe(FILE_SIGNS['pic.jpeg']);
     });
   });
 
@@ -88,15 +70,15 @@ describe(__filename, () => {
       expect.hasAssertions();
 
       // init
-      const { dir1, dir2 } = setupDirs();
+      const { dir1, dir2 } = DIRS;
 
       await new File({
-        filepath: path.join(dir1, 'file1'),
-        sign: fileSigns.file1,
+        filepath: FILE_PATHS.file1,
+        sign: FILE_SIGNS.file1,
       }).save();
       await new File({
-        filepath: path.join(dir2, 'file3'),
-        sign: fileSigns.file3,
+        filepath: FILE_PATHS.file3,
+        sign: FILE_SIGNS.file3,
       }).save();
 
       // process
@@ -108,12 +90,12 @@ describe(__filename, () => {
       const checkSign = checkFunction(cachedFiles);
 
       expect(cachedFiles).toHaveLength(6);
-      expect(checkSign(dir1, 'file1')).toBe(fileSigns.file1);
-      expect(checkSign(dir1, 'file2')).toBe(fileSigns.file2);
-      expect(checkSign(dir1, 'pic.png')).toBe(fileSigns['pic.png']);
-      expect(checkSign(dir2, 'file3')).toBe(fileSigns.file3);
-      expect(checkSign(dir2, 'file4')).toBe(fileSigns.file4);
-      expect(checkSign(dir2, 'pic.jpeg')).toBe(fileSigns['pic.jpeg']);
+      expect(checkSign(dir1, 'file1')).toBe(FILE_SIGNS.file1);
+      expect(checkSign(dir1, 'file2')).toBe(FILE_SIGNS.file2);
+      expect(checkSign(dir1, 'pic.png')).toBe(FILE_SIGNS['pic.png']);
+      expect(checkSign(dir2, 'file3')).toBe(FILE_SIGNS.file3);
+      expect(checkSign(dir2, 'file4')).toBe(FILE_SIGNS.file4);
+      expect(checkSign(dir2, 'pic.jpeg')).toBe(FILE_SIGNS['pic.jpeg']);
     });
   });
 
@@ -122,7 +104,7 @@ describe(__filename, () => {
       expect.hasAssertions();
 
       // init
-      const { dir1, theSame } = setupDirs();
+      const { dir1, theSame } = DIRS;
 
       // process
       await collect({ dirpath: dir1 });
@@ -132,8 +114,8 @@ describe(__filename, () => {
       const cachedFiles = await File.fetchAll();
       const checkSign = checkFunction(cachedFiles);
 
-      expect(checkSign(dir1, 'file1')).toBe(fileSigns.file1);
-      expect(checkSign(theSame, 'thesame1')).toBe(fileSigns.thesame1);
+      expect(checkSign(dir1, 'file1')).toBe(FILE_SIGNS.file1);
+      expect(checkSign(theSame, 'thesame1')).toBe(FILE_SIGNS.thesame1);
     });
   });
 });
