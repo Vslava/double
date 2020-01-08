@@ -4,7 +4,7 @@ const context = require('context');
 module.exports = async (argv) => {
   const { services } = context();
 
-  return services.scanFilesWoCollect({
+  return services.scanFilesInDirectory({
     showDoubles: !!argv['show-doubles'],
     dirpath: argv.dirpath,
   });

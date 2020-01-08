@@ -43,9 +43,9 @@ yargs
     handler: handlerWrapper(commandHandlers.purge),
   })
   .command({
-    command: 'just-scan [--show-doubles] <dirpath>',
-    desc: 'Scan files in the specified directory. '
-        + 'It shows the files with and without doubles in the db',
+    command: 'scan-files [--show-doubles] <dirpath>',
+    desc: 'Scan files in the specified directory and '
+        + 'show the files with and without doubles in the db',
     builder: (_yargs) => {
       _yargs.positional('dirpath', {
         describe: 'A directory where the files are being scanned',
@@ -56,7 +56,7 @@ yargs
         type: 'boolean',
       });
     },
-    handler: handlerWrapper(commandHandlers.justScan),
+    handler: handlerWrapper(commandHandlers.scanFiles),
   })
   .command({
     command: 'remove-doubles <dirpath>',
