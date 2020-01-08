@@ -1,4 +1,6 @@
-module.exports = async (handler) => {
-  await handler();
-  process.exit(0);
-};
+module.exports = async (handler) => (
+  async (argv) => {
+    await handler(argv);
+    process.exit(0);
+  }
+);

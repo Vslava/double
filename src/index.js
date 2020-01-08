@@ -2,6 +2,7 @@ const yargs = require('yargs');
 const context = require('context');
 
 const { commandHandlers } = context();
+const { handlerWrapper } = context().commandHandlers;
 
 // eslint-disable-next-line no-unused-expressions
 yargs
@@ -18,12 +19,12 @@ yargs
         type: 'boolean',
       });
     },
-    handler: commandHandlers.collect,
+    handler: handlerWrapper(commandHandlers.collect),
   })
   .command({
     command: 'rescan',
     desc: 'Rescan all directories saved in the db',
-    handler: commandHandlers.rescan,
+    handler: handlerWrapper(commandHandlers.rescan),
   })
   .command({
     command: 'doubles [dirpath]',
@@ -34,12 +35,12 @@ yargs
         type: 'string',
       });
     },
-    handler: commandHandlers.doubles,
+    handler: handlerWrapper(commandHandlers.doubles),
   })
   .command({
     command: 'purge',
     desc: 'Purge the absent file paths in the db',
-    handler: commandHandlers.purge,
+    handler: handlerWrapper(commandHandlers.purge),
   })
   .command({
     command: 'just-scan [--show-doubles] <dirpath>',
@@ -55,7 +56,7 @@ yargs
         type: 'boolean',
       });
     },
-    handler: commandHandlers.justScan,
+    handler: handlerWrapper(commandHandlers.justScan),
   })
   .command({
     command: 'remove-doubles <dirpath>',
@@ -66,7 +67,7 @@ yargs
         type: 'string',
       });
     },
-    handler: commandHandlers.removeDoubles,
+    handler: handlerWrapper(commandHandlers.removeDoubles),
   })
   .scriptName('doubler')
   .strict()
