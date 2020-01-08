@@ -3,20 +3,14 @@ const path = require('path');
 const appContext = require('context');
 
 describe(__filename, () => {
+  const { loggers } = appContext();
   const { File } = appContext().models;
-  const { rescanFiles } = appContext().services;
+  const { rescan } = appContext().commandHandlers;
 
   const fileSigns = Object.freeze({
     file1: 'b6ee2058d98027764d589b1e3a102c39',
     file2: '6174e909453ef9d1658f95856eea4c97',
   });
-
-  const options = {
-    loggers: {
-      fileAbsent: jest.fn(),
-      fileRescanned: jest.fn(),
-    },
-  };
 
   function setupDirs() {
     const rootDir = path.join(FIXTURE_DIR, 'several_dirs');
@@ -42,14 +36,16 @@ describe(__filename, () => {
       sign: 'fakesign',
     }).save();
 
+    const loggerSpy = jest.spyOn(loggers, 'fileRescanned');
+
     // process
-    await rescanFiles(options);
+    await rescan();
 
     // check
     await rescanFile.refresh();
 
     expect(rescanFile.get('sign')).toBe(fileSigns.file2);
-    expect(options.loggers.fileRescanned).toHaveBeenCalledWith(file2Path);
+    expect(loggerSpy).toHaveBeenCalledWith(file2Path);
   });
 
   describe('when the file in the db is absent', () => {
@@ -69,11 +65,13 @@ describe(__filename, () => {
         sign: fileSigns.file2,
       }).save();
 
+      const loggerSpy = jest.spyOn(loggers, 'fileAbsent');
+
       // process
-      await rescanFiles(options);
+      await rescan();
 
       // check
-      expect(options.loggers.fileAbsent).toHaveBeenCalledWith(fakeFilePath);
+      expect(loggerSpy).toHaveBeenCalledWith(fakeFilePath);
     });
   });
 });

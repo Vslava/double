@@ -4,7 +4,7 @@ const path = require('path');
 const appContext = require('context');
 
 describe(__filename, () => {
-  const { purgeAbsentFiles } = appContext().services;
+  const { purge } = appContext().commandHandlers;
   const { File } = appContext().models;
 
   const fileSigns = Object.freeze({
@@ -20,13 +20,11 @@ describe(__filename, () => {
     });
   }
 
-  it('removes all absent files', async () => {
+  it('removes all absent files from the db', async () => {
     expect.hasAssertions();
 
     // init
     const { dir1 } = setupDirs();
-
-    const logger = () => {};
 
     const file1 = await new File({
       filepath: path.join(dir1, 'file1'),
@@ -43,7 +41,7 @@ describe(__filename, () => {
     }).save();
 
     // process
-    await purgeAbsentFiles({ logger });
+    await purge();
 
     // check
     const absentCount = await new File().where('id', absentFile.id).count();

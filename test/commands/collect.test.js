@@ -4,7 +4,7 @@ const path = require('path');
 const appContext = require('context');
 
 describe(__filename, () => {
-  const { collectFiles } = appContext().services;
+  const { collect } = appContext().commandHandlers;
   const { File } = appContext().models;
 
   function checkFunction(cachedFiles) {
@@ -27,13 +27,6 @@ describe(__filename, () => {
     thesame1: 'b6ee2058d98027764d589b1e3a102c39',
   });
 
-  const options = {
-    loggers: {
-      fileAlreadyCollected: () => {},
-      fileProcessed: () => {},
-    },
-  };
-
   function setupDirs() {
     const rootDir = path.join(FIXTURE_DIR, 'several_dirs');
 
@@ -52,9 +45,8 @@ describe(__filename, () => {
       const { dir1, dir2 } = setupDirs();
 
       // process
-      await collectFiles({
-        dirpaths: [dir1, dir2],
-      }, options);
+      await collect({ dirpath: dir1 });
+      await collect({ dirpath: dir2 });
 
       // check
       const cachedFiles = await File.fetchAll();
@@ -78,10 +70,8 @@ describe(__filename, () => {
       const { dir1, dir2 } = setupDirs();
 
       // process
-      await collectFiles({
-        dirpaths: [dir1, dir2],
-        onlyImages: true,
-      }, options);
+      await collect({ dirpath: dir1, 'only-images': true });
+      await collect({ dirpath: dir2, 'only-images': true });
 
       // check
       const cachedFiles = await File.fetchAll();
@@ -110,9 +100,8 @@ describe(__filename, () => {
       }).save();
 
       // process
-      await collectFiles({
-        dirpaths: [dir1, dir2],
-      }, options);
+      await collect({ dirpath: dir1 });
+      await collect({ dirpath: dir2 });
 
       // check
       const cachedFiles = await File.fetchAll();
@@ -136,9 +125,8 @@ describe(__filename, () => {
       const { dir1, theSame } = setupDirs();
 
       // process
-      await collectFiles({
-        dirpaths: [dir1, theSame],
-      }, options);
+      await collect({ dirpath: dir1 });
+      await collect({ dirpath: theSame });
 
       // check
       const cachedFiles = await File.fetchAll();

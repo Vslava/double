@@ -1,7 +1,9 @@
 /* eslint-disable no-lonely-if */
 const context = require('context');
 
-function showFileAndDoubles(filePath, doubles, loggers) {
+function showFileAndDoubles(filePath, doubles) {
+  const { loggers } = context();
+
   const doubleFilePaths = doubles.map((double) => double.filepath);
 
   loggers.fileWithDoubles(
@@ -10,11 +12,9 @@ function showFileAndDoubles(filePath, doubles, loggers) {
   );
 }
 
-async function fileProcessor({ filePath, showDoubles }, options) {
-  const { services } = context();
+async function fileProcessor({ filePath, showDoubles }) {
+  const { services, loggers } = context();
   const { File } = context().models;
-
-  const { loggers } = options;
 
   const fileSign = await services.util.createFileSign(filePath);
 
@@ -31,11 +31,11 @@ async function fileProcessor({ filePath, showDoubles }, options) {
   }
 }
 
-module.exports = async ({ dirpath, showDoubles }, options) => {
+module.exports = async ({ dirpath, showDoubles }) => {
   const { services } = context();
 
   await services.util.processDirectory({
     dirpath,
-    fileProcessor: (filePath) => fileProcessor({ filePath, showDoubles }, options),
+    fileProcessor: (filePath) => fileProcessor({ filePath, showDoubles }),
   });
 };

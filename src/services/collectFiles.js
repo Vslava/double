@@ -9,10 +9,9 @@ async function fileExistInDb(filePath) {
   return filesCount > 0;
 }
 
-async function saveInfoAboutFile(filePath, options) {
-  const { services } = context();
+async function saveInfoAboutFile(filePath) {
+  const { services, loggers } = context();
   const { File } = context().models;
-  const { loggers } = options;
 
   const fileSign = await services.util.createFileSign(filePath);
 
@@ -26,18 +25,18 @@ async function saveInfoAboutFile(filePath, options) {
   return null;
 }
 
-async function fileProcessor(filePath, options) {
-  const { loggers } = options;
+async function fileProcessor(filePath) {
+  const { loggers } = context();
 
   if (await fileExistInDb(filePath)) {
     loggers.fileAlreadyCollected(filePath);
     return null;
   }
 
-  return saveInfoAboutFile(filePath, options);
+  return saveInfoAboutFile(filePath);
 }
 
-module.exports = async ({ dirpaths, onlyImages }, options) => {
+module.exports = async ({ dirpaths, onlyImages }) => {
   const { services } = context();
 
   const fileAccessors = services.util.makeFileAccessorsList({ onlyImages });
@@ -46,7 +45,7 @@ module.exports = async ({ dirpaths, onlyImages }, options) => {
     services.util.processDirectory({
       fileAccessors,
       dirpath,
-      fileProcessor: (filePath) => fileProcessor(filePath, options),
+      fileProcessor: (filePath) => fileProcessor(filePath),
     })
   ));
 };

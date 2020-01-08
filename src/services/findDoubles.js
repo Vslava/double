@@ -1,9 +1,9 @@
 const async = require('async');
 const context = require('context');
 
-module.exports = async ({ dirpath }, options) => {
+module.exports = async ({ dirpath }) => {
+  const { loggers } = context();
   const { File } = context().models;
-  const { logger } = options;
 
   const doublesStream = File.findDoublesInDirectoryStream(dirpath);
 
@@ -19,6 +19,6 @@ module.exports = async ({ dirpath }, options) => {
       .map((doubleFile) => doubleFile.filepath)
       .filter((doubleFilePath) => doubleFilePath !== originFilePath);
 
-    logger(originFilePath, doubleFilePathsForSign);
+    loggers.doubleFiles(originFilePath, doubleFilePathsForSign);
   });
 };

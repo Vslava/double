@@ -1,10 +1,10 @@
 const async = require('async');
 const context = require('context');
 
-module.exports = async (options) => {
+module.exports = async () => {
+  const { loggers } = context();
   const { util } = context().services;
   const { File } = context().models;
-  const { logger } = options;
 
   const allFilesStream = File.findAllStream();
 
@@ -14,7 +14,7 @@ module.exports = async (options) => {
 
     if (!fileExist) {
       await File.deleteById(file.id);
-      logger(filePath);
+      loggers.purgedFile(filePath);
     }
   });
 };

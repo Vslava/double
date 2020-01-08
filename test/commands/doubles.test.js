@@ -3,7 +3,8 @@ const path = require('path');
 const appContext = require('context');
 
 describe(__filename, () => {
-  const { findDoubles } = appContext().services;
+  const { loggers } = appContext();
+  const { doubles } = appContext().commandHandlers;
   const { File } = appContext().models;
 
   const fileSigns = Object.freeze({
@@ -40,10 +41,10 @@ describe(__filename, () => {
         sign: fileSigns.file2,
       }).save();
 
-      const loggerSpy = jest.fn();
+      const loggerSpy = jest.spyOn(loggers, 'doubleFiles');
 
       // process
-      await findDoubles({}, { logger: loggerSpy });
+      await doubles({});
 
       // check
       expect(loggerSpy).toHaveBeenCalledTimes(4);
@@ -82,14 +83,10 @@ describe(__filename, () => {
         sign: fileSigns.file2,
       }).save();
 
-      const loggerSpy = jest.fn();
+      const loggerSpy = jest.spyOn(loggers, 'doubleFiles');
 
       // process
-      await findDoubles({
-        dirpath: '/dir',
-      }, {
-        logger: loggerSpy,
-      });
+      await doubles({ dirpath: '/dir' });
 
       // check
       expect(loggerSpy).toHaveBeenCalledTimes(2);

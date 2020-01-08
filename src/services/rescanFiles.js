@@ -1,17 +1,15 @@
 const async = require('async');
 const context = require('context');
 
-module.exports = async (options) => {
+module.exports = async () => {
+  const { loggers } = context();
   const { util } = context().services;
   const { File } = context().models;
-  const { loggers } = options;
 
   const allFilesGenerator = await File.findAllGen();
 
   return async.eachSeries(allFilesGenerator, async (file) => {
     const { filepath } = file;
-
-    console.log('---', filepath);
 
     if (await util.isFileExist(filepath)) {
       const fileSign = await util.createFileSign(filepath);
