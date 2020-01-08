@@ -4,7 +4,7 @@ const context = require('context');
 module.exports = async (argv) => {
   const { services } = context();
 
-  return services.removeDoublesInDirectory({
+  return services.removeFilesHavingDoublesInDirectory({
     dirpath: argv.dirpath,
   });
 };
