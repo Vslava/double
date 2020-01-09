@@ -694,10 +694,15 @@ bindings@^1.5.0:
   dependencies:
     file-uri-to-path "1.0.0"
 
-bluebird@^3.5.5, bluebird@^3.7.1:
+bluebird@^3.5.5:
   version "3.7.1"
   resolved "https://registry.yarnpkg.com/bluebird/-/bluebird-3.7.1.tgz#df70e302b471d7473489acf26a93d63b53f874de"
   integrity sha512-DdmyoGCleJnkbp3nkbxTLJ18rjDsE4yCggEwKNXkeV123sPNfOCYeDoeuOY+F2FrSjO1YXcTU+dsy96KMy+gcg==
+
+bluebird@^3.7.2:
+  version "3.7.2"
+  resolved "https://registry.yarnpkg.com/bluebird/-/bluebird-3.7.2.tgz#9f229c15be272454ffa973ace0dbee79a1b0c36f"
+  integrity sha512-XpNj6GDQzdfW+r2Wnn7xiSAd7TM3jzkxGXBGTtWKuSXv1xUV+azxAm8jdWZN06QTQk+2N2XB9jRDkvbmQmcRtg==
 
 bookshelf@^1.0.1:
   version "1.0.1"
@@ -923,10 +928,10 @@ combined-stream@^1.0.6, combined-stream@~1.0.6:
   dependencies:
     delayed-stream "~1.0.0"
 
-commander@^3.0.2:
-  version "3.0.2"
-  resolved "https://registry.yarnpkg.com/commander/-/commander-3.0.2.tgz#6837c3fb677ad9933d1cfba42dd14d5117d6b39e"
-  integrity sha512-Gar0ASD4BDyKC4hl4DwHqDrmvjoxWKZigVnAbn5H1owvm4CxCPdb0HQDehwNYMJpla5+M2tPmPARzhtYuwpHow==
+commander@^4.1.0:
+  version "4.1.0"
+  resolved "https://registry.yarnpkg.com/commander/-/commander-4.1.0.tgz#545983a0603fe425bc672d66c9e3c89c42121a83"
+  integrity sha512-NIQrwvv9V39FHgGFm36+U9SMQzbiHvU79k+iADraJTpmrFFfx7Ds0IvDoAdZsDrknlkRk14OYoWXb57uTh7/sw==
 
 commander@~2.20.3:
   version "2.20.3"
@@ -1294,10 +1299,10 @@ eslint-plugin-import@^2.19.1:
     read-pkg-up "^2.0.0"
     resolve "^1.12.0"
 
-eslint-plugin-jest@^23.2.0:
-  version "23.2.0"
-  resolved "https://registry.yarnpkg.com/eslint-plugin-jest/-/eslint-plugin-jest-23.2.0.tgz#72d9ac0421b9b6ef774bcf4783329c016ed7cd6a"
-  integrity sha512-/jbCUW+g0jejXAvsytgcNhii6uEgolt0RO2e4+mhmXybfkcram5V3XIyrHCnUsb0vCmDKgHhJ1lYSm7F3VCEDA==
+eslint-plugin-jest@^23.3.0:
+  version "23.3.0"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-jest/-/eslint-plugin-jest-23.3.0.tgz#b1443d0c46d6a0de9ef3de78176dd6688c7d5326"
+  integrity sha512-GE6CR4ESJeu6Huw7vfZfaXHmX2R2kCFvf2X9OMcOxfP158yLKgLWz7PqLYTwRDACi84IhpmRxO8lK7GGwG05UQ==
   dependencies:
     "@typescript-eslint/experimental-utils" "^2.5.0"
 
@@ -2028,10 +2033,10 @@ intel@^1.2.0:
     symbol "~0.3.1"
     utcstring "~0.1.0"
 
-interpret@^1.2.0:
-  version "1.2.0"
-  resolved "https://registry.yarnpkg.com/interpret/-/interpret-1.2.0.tgz#d5061a6224be58e8083985f5014d844359576296"
-  integrity sha512-mT34yGKMNceBQUoVn7iCDKDntA7SC6gycMAWzGx1z/CMCTV7b2AAtXlo3nRyHZ1FelRkQbQjprHSYGwzLtkVbw==
+interpret@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/interpret/-/interpret-2.0.0.tgz#b783ffac0b8371503e9ab39561df223286aa5433"
+  integrity sha512-e0/LknJ8wpMMhTiWcjivB+ESwIuvHnBSlBbmP/pSb8CQJldoj1p2qv7xGZ/+BtbTziYRFSz8OsvdbiX45LtYQA==
 
 invariant@^2.2.4:
   version "2.2.4"
@@ -2786,18 +2791,18 @@ kleur@^3.0.3:
   resolved "https://registry.yarnpkg.com/kleur/-/kleur-3.0.3.tgz#a79c9ecc86ee1ce3fa6206d1216c501f147fc07e"
   integrity sha512-eTIzlVOSUR+JxdDFepEYcBMtZ9Qqdef+rnzWdRZuMbOywu5tO2w2N7rqjoANZ5k9vywhL6Br1VRjUIgTQx4E8w==
 
-knex@^0.20.1:
-  version "0.20.1"
-  resolved "https://registry.yarnpkg.com/knex/-/knex-0.20.1.tgz#e2765492a810b3ae6b4c1b49a7bc4719c83f5c12"
-  integrity sha512-vQvlzsCw4kkqWLmUFVhPX8H4KrfSLVSVGbMJVo4fhJ8N5fN+CH0LzgAmQBh0iwbJY7x8Sk3T4pEjnUlUKjnCPw==
+knex@^0.20.7:
+  version "0.20.7"
+  resolved "https://registry.yarnpkg.com/knex/-/knex-0.20.7.tgz#659ef45a395add4a40412bba6c749fe290f01cd5"
+  integrity sha512-Yu5WfQqK9JSkxMAWnCdeWbsjTKTzsjMYjqmUowOQnyLMs4RspVehqXCVjg+aTtcVrTtIZ3WvoeE00OzFsZKJow==
   dependencies:
-    bluebird "^3.7.1"
+    bluebird "^3.7.2"
     colorette "1.1.0"
-    commander "^3.0.2"
+    commander "^4.1.0"
     debug "4.1.1"
     getopts "2.2.5"
     inherits "~2.0.4"
-    interpret "^1.2.0"
+    interpret "^2.0.0"
     liftoff "3.1.0"
     lodash "^4.17.15"
     mkdirp "^0.5.1"
