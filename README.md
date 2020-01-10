@@ -8,3 +8,4 @@
 * Rewrite using functional way
 * Make compilation to the single file to simplify starting the app
   * Make a config to recognize where the database should be
+  * Make the app like CLI application
