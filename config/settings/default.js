@@ -1,5 +1,5 @@
 module.exports = {
   db: {
-    url: process.env.DATABASE_URL,
+    path: process.env.DATABASE_PATH,
   },
 };
