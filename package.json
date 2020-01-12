@@ -16,7 +16,8 @@
     "doubler": "bin/doubler"
   },
   "scripts": {
-    "test": "jest --forceExit --detectOpenHandles"
+    "test": "jest --forceExit --detectOpenHandles",
+    "dev:start": "node src/start-dev.js"
   },
   "engines": {
     "node": "^13.5.0",
