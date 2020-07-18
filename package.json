@@ -30,7 +30,7 @@
     "file-type": "^12.4.2",
     "intel": "^1.2.0",
     "knex": "^0.20.7",
-    "lodash": "^4.17.15",
+    "lodash": "^4.17.19",
     "requireindex": "^1.2.0",
     "sqlite3": "^4.1.1",
     "yargs": "^15.1.0"
