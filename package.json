@@ -24,7 +24,7 @@
     "yarn": "^1.21.1"
   },
   "dependencies": {
-    "async": "^3.1.0",
+    "async": "^3.2.2",
     "bookshelf": "^1.0.1",
     "faker": "^4.1.0",
     "file-type": "^12.4.2",
